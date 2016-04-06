@@ -8,7 +8,7 @@
 
 import Foundation
 
-class iBeamon {
+class Pokemon {
     private var _name: String!
     private var _pokedexId: Int!
     
