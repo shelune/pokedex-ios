@@ -15,6 +15,7 @@
 		6A00746E1CB538CE0042A18F /* pokedex_iosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A00746D1CB538CE0042A18F /* pokedex_iosTests.swift */; };
 		6A0074791CB538CE0042A18F /* pokedex_iosUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0074781CB538CE0042A18F /* pokedex_iosUITests.swift */; };
 		6A0074871CB53B410042A18F /* pokemon.csv in Resources */ = {isa = PBXBuildFile; fileRef = 6A0074861CB53B410042A18F /* pokemon.csv */; };
+		6A00748A1CB5521D0042A18F /* iBeamon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0074891CB5521D0042A18F /* iBeamon.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		6A0074781CB538CE0042A18F /* pokedex_iosUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pokedex_iosUITests.swift; sourceTree = "<group>"; };
 		6A00747A1CB538CE0042A18F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6A0074861CB53B410042A18F /* pokemon.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = pokemon.csv; sourceTree = "<group>"; };
+		6A0074891CB5521D0042A18F /* iBeamon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iBeamon.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +101,7 @@
 		6A0074571CB538CE0042A18F /* pokedex-ios */ = {
 			isa = PBXGroup;
 			children = (
+				6A0074881CB552110042A18F /* Model */,
 				6A0074581CB538CE0042A18F /* AppDelegate.swift */,
 				6A00745A1CB538CE0042A18F /* ViewController.swift */,
 				6A0074861CB53B410042A18F /* pokemon.csv */,
@@ -126,6 +129,14 @@
 				6A00747A1CB538CE0042A18F /* Info.plist */,
 			);
 			path = "pokedex-iosUITests";
+			sourceTree = "<group>";
+		};
+		6A0074881CB552110042A18F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				6A0074891CB5521D0042A18F /* iBeamon.swift */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -263,6 +274,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6A00748A1CB5521D0042A18F /* iBeamon.swift in Sources */,
 				6A00745B1CB538CE0042A18F /* ViewController.swift in Sources */,
 				6A0074591CB538CE0042A18F /* AppDelegate.swift in Sources */,
 			);
