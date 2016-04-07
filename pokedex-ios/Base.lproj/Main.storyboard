@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -26,15 +27,28 @@
                                         <color key="textColor" red="0.98320600270000003" green="0.98733520509999995" blue="0.98344896979999996" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KjE-mz-ch3">
+                                        <rect key="frame" x="514" y="1" width="60" height="59"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="24" id="1dG-cJ-jND"/>
+                                            <constraint firstAttribute="width" constant="24" id="tIv-jr-EQ8"/>
+                                        </constraints>
+                                        <state key="normal" image="volume-w"/>
+                                        <connections>
+                                            <action selector="musicBtnPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="NME-fO-epH"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.17254901959999999" green="0.54117647059999996" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstItem="QsD-Rz-g7N" firstAttribute="centerY" secondItem="oTb-8U-7eo" secondAttribute="centerY" id="Hq8-z3-J19"/>
                                     <constraint firstItem="QsD-Rz-g7N" firstAttribute="centerX" secondItem="oTb-8U-7eo" secondAttribute="centerX" id="VQ8-zU-O96"/>
+                                    <constraint firstAttribute="trailingMargin" secondItem="KjE-mz-ch3" secondAttribute="trailing" constant="8" id="jaR-0R-6bv"/>
+                                    <constraint firstItem="KjE-mz-ch3" firstAttribute="centerY" secondItem="oTb-8U-7eo" secondAttribute="centerY" id="p8F-7q-ikB"/>
                                     <constraint firstAttribute="height" constant="60" id="xKb-3i-Z0N"/>
                                 </constraints>
                             </view>
-                            <searchBar contentMode="redraw" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Yqh-IG-mUi">
+                            <searchBar contentMode="redraw" misplaced="YES" placeholder="Enter Pokemon Name" translatesAutoresizingMaskIntoConstraints="NO" id="Yqh-IG-mUi">
                                 <rect key="frame" x="0.0" y="58" width="600" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="Lgk-4g-jbc"/>
@@ -211,16 +225,18 @@
                     <connections>
                         <outlet property="collectionDex" destination="tO2-aL-aOR" id="HGP-5k-rnC"/>
                         <outlet property="collectionTeam" destination="0AC-qA-1ee" id="94q-GK-OND"/>
+                        <outlet property="searchBar" destination="Yqh-IG-mUi" id="inu-DV-z2U"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="305" y="343"/>
+            <point key="canvasLocation" x="220" y="456"/>
         </scene>
     </scenes>
     <resources>
         <image name="1" width="96" height="96"/>
         <image name="2" width="96" height="96"/>
         <image name="background" width="1000" height="720"/>
+        <image name="volume-w" width="512" height="512"/>
     </resources>
 </document>
