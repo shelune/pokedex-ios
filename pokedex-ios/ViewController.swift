@@ -14,7 +14,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     @IBOutlet weak var collectionDex: UICollectionView!
     @IBOutlet weak var collectionTeam: UICollectionView!
     
-    var pokemons = [Pokemon]()
+    var pokemons = [NSManagedObject]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,7 +51,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if (collectionView.tag == 1) {
-            return 718
+            return pokemons.count
         } else {
             return 3
         }
@@ -69,6 +69,8 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     
     func parsePokemonCSV() {
         let path = NSBundle.mainBundle().pathForResource("pokemon", ofType: "csv")!
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let managedContext = appDelegate.managedObjectContext
         
         do {
             let csv = try CSVParser(contentsOfURL: path)
@@ -76,15 +78,42 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             
             for row in rows {
                 let pokeId = Int(row["id"]!)!
-                let name = row["identifier"]
-                let poke = Pokemon(name: name!, pokedexId: pokeId)
+                let name = row["identifier"]?.capitalizedString
+                let entity = NSEntityDescription.entityForName("Pokemon", inManagedObjectContext: managedContext)
+                let poke = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedContext)
+                poke.setValue(name, forKey: "name")
+                poke.setValue(pokeId, forKey: "pokedexId")
+                print(poke.primitiveValueForKey("pokedexId"))
+                
                 pokemons.append(poke)
             }
-            
-            print (rows)
         } catch {
             
         }
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        /*
+        super.viewWillAppear(animated)
+        
+        //1
+        let appDelegate =
+            UIApplication.sharedApplication().delegate as! AppDelegate
+        
+        let managedContext = appDelegate.managedObjectContext
+        
+        //2
+        let fetchRequest = NSFetchRequest(entityName: "Pokemon")
+        
+        //3
+        do {
+            let results =
+                try managedContext.executeFetchRequest(fetchRequest)
+                pokemons = results as! [NSManagedObject]
+        } catch let error as NSError {
+            print("Could not fetch \(error), \(error.userInfo)")
+        }
+         */
     }
 }
 
