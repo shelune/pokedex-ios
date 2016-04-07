@@ -7,23 +7,31 @@
 //
 
 import UIKit
+import CoreData
 
 class ViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
 
     @IBOutlet weak var collectionDex: UICollectionView!
     @IBOutlet weak var collectionTeam: UICollectionView!
+    
+    var pokemons = [Pokemon]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
         
+        // setting up delegation & data source for 2 collections
         collectionDex.delegate = self
         collectionTeam.delegate = self
         
         collectionDex.dataSource = self
         collectionTeam.dataSource = self
         
+        // reset transparent background for collection view
         collectionDex.backgroundColor = UIColor.clearColor()
         collectionTeam.backgroundColor = UIColor.clearColor()
+        
+        // parsing data from csv
+        parsePokemonCSV()
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
@@ -33,6 +41,8 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCellWithReuseIdentifier("PokeCell", forIndexPath: indexPath) as? PokeCell {
             
+            let pokemon = pokemons[indexPath.row]
+            cell.configureCell(pokemon)
             return cell
         } else {
             return UICollectionViewCell()
@@ -41,7 +51,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if (collectionView.tag == 1) {
-            return 30
+            return 718
         } else {
             return 3
         }
@@ -53,6 +63,28 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         return CGSize(width: 80, height: 80)
+    }
+    
+    // Parsing
+    
+    func parsePokemonCSV() {
+        let path = NSBundle.mainBundle().pathForResource("pokemon", ofType: "csv")!
+        
+        do {
+            let csv = try CSVParser(contentsOfURL: path)
+            let rows = csv.rows
+            
+            for row in rows {
+                let pokeId = Int(row["id"]!)!
+                let name = row["identifier"]
+                let poke = Pokemon(name: name!, pokedexId: pokeId)
+                pokemons.append(poke)
+            }
+            
+            print (rows)
+        } catch {
+            
+        }
     }
 }
 

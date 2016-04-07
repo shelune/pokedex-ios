@@ -76,6 +76,10 @@
                                                     </subviews>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 </view>
+                                                <connections>
+                                                    <outlet property="nameLbl" destination="7qR-Bc-Jlk" id="UyJ-bi-TXe"/>
+                                                    <outlet property="thumbImg" destination="IDN-do-uMg" id="EIB-xI-gYq"/>
+                                                </connections>
                                             </collectionViewCell>
                                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="MAF-A2-Klh">
                                                 <rect key="frame" x="96" y="30" width="80" height="80"/>
