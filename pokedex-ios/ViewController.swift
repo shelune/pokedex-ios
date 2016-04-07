@@ -83,7 +83,6 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
                 let poke = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedContext)
                 poke.setValue(name, forKey: "name")
                 poke.setValue(pokeId, forKey: "pokedexId")
-                print(poke.primitiveValueForKey("pokedexId"))
                 
                 pokemons.append(poke)
             }

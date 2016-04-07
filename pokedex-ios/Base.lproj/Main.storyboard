@@ -19,8 +19,18 @@
                         <subviews>
                             <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oTb-8U-7eo">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="58"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Collection" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QsD-Rz-g7N">
+                                        <rect key="frame" x="207" y="8" width="187" height="46"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="26"/>
+                                        <color key="textColor" red="0.98320600270000003" green="0.98733520509999995" blue="0.98344896979999996" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
                                 <color key="backgroundColor" red="0.17254901959999999" green="0.54117647059999996" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
+                                    <constraint firstItem="QsD-Rz-g7N" firstAttribute="centerY" secondItem="oTb-8U-7eo" secondAttribute="centerY" id="Hq8-z3-J19"/>
+                                    <constraint firstItem="QsD-Rz-g7N" firstAttribute="centerX" secondItem="oTb-8U-7eo" secondAttribute="centerX" id="VQ8-zU-O96"/>
                                     <constraint firstAttribute="height" constant="60" id="xKb-3i-Z0N"/>
                                 </constraints>
                             </view>
@@ -65,7 +75,7 @@
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Ivysaur" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7qR-Bc-Jlk">
                                                             <rect key="frame" x="0.0" y="59" width="80" height="21"/>
                                                             <color key="backgroundColor" red="0.31985751670000001" green="1" blue="0.32252766700000002" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                             <color key="textColor" red="0.98320600270000003" green="0.98733520509999995" blue="0.98344896979999996" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
@@ -162,7 +172,7 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Pokemon" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kSN-KA-wrG">
                                                     <rect key="frame" x="0.0" y="60" width="80" height="20"/>
                                                     <color key="backgroundColor" red="0.17254901959999999" green="0.54117647059999996" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <color key="textColor" red="0.98320600270000003" green="0.98733520509999995" blue="0.98344896979999996" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
