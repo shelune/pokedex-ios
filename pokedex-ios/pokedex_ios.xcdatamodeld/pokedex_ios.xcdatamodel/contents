@@ -4,7 +4,12 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="pokedexId" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
     </entity>
+    <entity name="User" syncable="YES">
+        <relationship name="active" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Pokemon" syncable="YES"/>
+        <relationship name="caught" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Pokemon" syncable="YES"/>
+    </entity>
     <elements>
         <element name="Pokemon" positionX="-63" positionY="-18" width="128" height="75"/>
+        <element name="User" positionX="214" positionY="-172" width="128" height="73"/>
     </elements>
 </model>
