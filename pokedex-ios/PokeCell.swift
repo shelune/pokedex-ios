@@ -7,12 +7,13 @@
 //
 
 import UIKit
+import CoreData
 
 class PokeCell: UICollectionViewCell {
     @IBOutlet weak var thumbImg: UIImageView!
     @IBOutlet weak var nameLbl: UILabel!
     
-    var pokemon: Pokemon!
+    var pokemon: NSManagedObject!
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -20,10 +21,10 @@ class PokeCell: UICollectionViewCell {
         layer.cornerRadius = 6.0
     }
     
-    func configureCell(pokemon: Pokemon) {
+    func configureCell(pokemon: NSManagedObject) {
         self.pokemon = pokemon
         
-        nameLbl.text = self.pokemon.name.capitalizedString
-        thumbImg.image = UIImage(named: "\(self.pokemon.pokedexId)")
+        nameLbl.text = self.pokemon.valueForKey("name") as? String
+        thumbImg.image = UIImage(named: "\(self.pokemon.valueForKey("pokedexId")!)")
     }
 }

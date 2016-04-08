@@ -8,23 +8,32 @@
 
 import UIKit
 import CoreData
+import AVFoundation
 
-class ViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+class ViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UISearchBarDelegate {
 
     @IBOutlet weak var collectionDex: UICollectionView!
     @IBOutlet weak var collectionTeam: UICollectionView!
     
-    var pokemons = [Pokemon]()
+    @IBOutlet weak var searchBar: UISearchBar!
+    
+    var pokemons = [NSManagedObject]()
+    var filteredPokemons = [NSManagedObject]()
+    var musicPlayer: AVAudioPlayer!
+    var inSearchMode = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // setting up delegation & data source for 2 collections
+        // setting up delegation & data source
         collectionDex.delegate = self
         collectionTeam.delegate = self
         
         collectionDex.dataSource = self
         collectionTeam.dataSource = self
+        
+        searchBar.delegate = self
+        searchBar.returnKeyType = UIReturnKeyType.Done
         
         // reset transparent background for collection view
         collectionDex.backgroundColor = UIColor.clearColor()
@@ -32,16 +41,44 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         
         // parsing data from csv
         parsePokemonCSV()
+        
+        // music
+        initAudio()
+    }
+    
+    func initAudio() {
+        let path = NSBundle.mainBundle().pathForResource("main-theme", ofType: "mp3")
+        do {
+            musicPlayer = try AVAudioPlayer(contentsOfURL: NSURL(string: path!)!)
+            musicPlayer.prepareToPlay()
+            musicPlayer.numberOfLoops = -1
+            musicPlayer.play()
+        } catch let err as NSError {
+            print("Error with Audio?")
+        }
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        var pokemon: NSManagedObject!
+        if inSearchMode {
+            pokemon = filteredPokemons[indexPath.row]
+        } else {
+            pokemon = pokemons[indexPath.row]
+        }
         
+        performSegueWithIdentifier("PokemonDetailVC", sender: pokemon)
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCellWithReuseIdentifier("PokeCell", forIndexPath: indexPath) as? PokeCell {
             
-            let pokemon = pokemons[indexPath.row]
+            let pokemon: NSManagedObject!
+            
+            if inSearchMode {
+                pokemon = filteredPokemons[indexPath.row]
+            } else {
+                pokemon = pokemons[indexPath.row]
+            }
             cell.configureCell(pokemon)
             return cell
         } else {
@@ -51,10 +88,12 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if (collectionView.tag == 1) {
-            return 718
-        } else {
-            return 3
+            if inSearchMode {
+                return filteredPokemons.count
+            }
+            return pokemons.count
         }
+        return 3
     }
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
@@ -67,8 +106,11 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     
     // Parsing
     
+    
     func parsePokemonCSV() {
         let path = NSBundle.mainBundle().pathForResource("pokemon", ofType: "csv")!
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let managedContext = appDelegate.managedObjectContext
         
         do {
             let csv = try CSVParser(contentsOfURL: path)
@@ -76,14 +118,85 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             
             for row in rows {
                 let pokeId = Int(row["id"]!)!
-                let name = row["identifier"]
-                let poke = Pokemon(name: name!, pokedexId: pokeId)
+                let name = row["identifier"]?.capitalizedString
+                let entity = NSEntityDescription.entityForName("Pokemon", inManagedObjectContext: managedContext)
+                let poke = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedContext)
+                poke.setValue(name, forKey: "name")
+                poke.setValue(pokeId, forKey: "pokedexId")
+                
+                
                 pokemons.append(poke)
             }
-            
-            print (rows)
         } catch {
-            
+            print("Error with parsing CSV?")
+        }
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        /*
+        super.viewWillAppear(animated)
+        
+        //1
+        let appDelegate =
+            UIApplication.sharedApplication().delegate as! AppDelegate
+        
+        let managedContext = appDelegate.managedObjectContext
+        
+        //2
+        let fetchRequest = NSFetchRequest(entityName: "Pokemon")
+        
+        //3
+        do {
+            let results =
+                try managedContext.executeFetchRequest(fetchRequest)
+                pokemons = results as! [NSManagedObject]
+        } catch let error as NSError {
+            print("Could not fetch \(error), \(error.userInfo)")
+        }
+         */
+    }
+    
+    // filter search phrase
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text == nil || (searchBar.text?.isEmpty)! {
+            inSearchMode = false
+            view.endEditing(true)
+            collectionDex.reloadData()
+        } else {
+            inSearchMode = true
+            let searchPhrase = searchBar.text!.lowercaseString
+            filteredPokemons = pokemons.filter({
+                ($0.valueForKey("name") as! String).lowercaseString.rangeOfString(searchPhrase) != nil
+            })
+            print(filteredPokemons)
+            collectionDex.reloadData()
+        }
+    }
+    
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        view.endEditing(true)
+    }
+    
+    // turn on / off music
+    @IBAction func musicBtnPressed(sender: UIButton) {
+        if musicPlayer.playing {
+            musicPlayer.stop()
+            sender.alpha = 0.2
+        } else {
+            musicPlayer.play()
+            sender.alpha = 1.0
+        }
+    }
+    
+    //
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "PokemonDetailVC" {
+            if let detailsVC = segue.destinationViewController as? PokemonDetailVC {
+                if let pokemon = sender as? NSManagedObject {
+                    detailsVC.pokemon = pokemon
+                }
+            }
         }
     }
 }
