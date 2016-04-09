@@ -11,6 +11,7 @@ import CoreData
 
 class PokemonDetailVC: UIViewController {
     
+    
     @IBOutlet weak var nameLbl: UILabel!
     var pokemon: NSManagedObject!
 

@@ -142,8 +142,6 @@
 				6A0074611CB538CE0042A18F /* LaunchScreen.storyboard */,
 				6A0074641CB538CE0042A18F /* Info.plist */,
 				6A0074901CB645110042A18F /* pokedex_ios.xcdatamodeld */,
-				6A0075011CB7A1850042A18F /* User+CoreDataProperties.swift */,
-				6A0075021CB7A1850042A18F /* User.swift */,
 			);
 			path = "pokedex-ios";
 			sourceTree = "<group>";
@@ -169,6 +167,8 @@
 		6A0074881CB552110042A18F /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				6A0075011CB7A1850042A18F /* User+CoreDataProperties.swift */,
+				6A0075021CB7A1850042A18F /* User.swift */,
 				6A0074891CB5521D0042A18F /* Pokemon.swift */,
 				6A0074F91CB67C290042A18F /* Pokemon+CoreDataProperties.swift */,
 			);
