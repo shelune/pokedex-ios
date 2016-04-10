@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import AVFoundation
+import Alamofire
 
 class ViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UISearchBarDelegate {
 

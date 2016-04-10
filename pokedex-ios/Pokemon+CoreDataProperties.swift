@@ -13,7 +13,6 @@ import Foundation
 import CoreData
 
 extension Pokemon {
-
     @NSManaged var name: String?
     @NSManaged var pokedexId: NSNumber?
     @NSManaged var height: String?
