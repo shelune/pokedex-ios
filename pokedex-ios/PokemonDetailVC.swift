@@ -12,6 +12,21 @@ import CoreData
 class PokemonDetailVC: UIViewController {
     
     
+    @IBOutlet weak var nextEvoImg: UIImageView!
+    @IBOutlet weak var currentEvoImg: UIImageView!
+    @IBOutlet weak var nextEvoLbl: UILabel!
+    @IBOutlet weak var pokeIdLbl: UILabel!
+    @IBOutlet weak var speedLbl: UILabel!
+    @IBOutlet weak var defenseLbl: UIStackView!
+    @IBOutlet weak var attackLbl: UILabel!
+    @IBOutlet weak var hpLbl: UILabel!
+    @IBOutlet weak var weightLbl: UILabel!
+    @IBOutlet weak var heightLbl: UILabel!
+    @IBOutlet weak var abilityLbl: UILabel!
+    @IBOutlet weak var typeSecond: UIImageView!
+    @IBOutlet weak var typeFirst: UIImageView!
+    @IBOutlet weak var descriptionLbl: UILabel!
+    @IBOutlet weak var mainImg: UIImageView!
     @IBOutlet weak var nameLbl: UILabel!
     var pokemon: NSManagedObject!
 
@@ -38,4 +53,7 @@ class PokemonDetailVC: UIViewController {
     }
     */
 
+    @IBAction func backBtnPressed(sender: AnyObject) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
 }

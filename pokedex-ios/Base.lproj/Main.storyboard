@@ -318,6 +318,9 @@
                                         <state key="normal" title="Back">
                                             <color key="titleColor" red="0.98320600270000003" green="0.98733520509999995" blue="0.98344896979999996" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
+                                        <connections>
+                                            <action selector="backBtnPressed:" destination="U12-JP-fpp" eventType="touchUpInside" id="gaI-iv-vc3"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.17254901959999999" green="0.54117647059999996" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -509,14 +512,14 @@
                                     <constraint firstItem="uRR-B0-iQg" firstAttribute="centerX" secondItem="69w-NQ-kH0" secondAttribute="centerX" id="TrF-s3-D2c"/>
                                 </constraints>
                             </view>
-                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DaV-GO-y1m">
+                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="DaV-GO-y1m">
                                 <rect key="frame" x="20" y="490" width="560" height="134"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="1" translatesAutoresizingMaskIntoConstraints="NO" id="FAX-pn-1GF">
-                                        <rect key="frame" x="0.0" y="0.0" width="464" height="134"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="1" translatesAutoresizingMaskIntoConstraints="NO" id="FAX-pn-1GF">
+                                        <rect key="frame" x="0.0" y="0.0" width="280" height="134"/>
                                     </imageView>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" highlightedImage="2" translatesAutoresizingMaskIntoConstraints="NO" id="MH7-NK-HlI">
-                                        <rect key="frame" x="464" y="0.0" width="96" height="134"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="2" translatesAutoresizingMaskIntoConstraints="NO" id="MH7-NK-HlI">
+                                        <rect key="frame" x="280" y="0.0" width="280" height="134"/>
                                     </imageView>
                                 </subviews>
                             </stackView>
@@ -556,7 +559,22 @@
                         </variation>
                     </view>
                     <connections>
+                        <outlet property="abilityLbl" destination="9UP-z6-hmT" id="asr-z8-6iH"/>
+                        <outlet property="attackLbl" destination="muP-x2-1eS" id="4uJ-V8-13r"/>
+                        <outlet property="currentEvoImg" destination="FAX-pn-1GF" id="rsm-jd-sIV"/>
+                        <outlet property="defenseLbl" destination="x5p-6k-fvH" id="TZ1-m5-VpE"/>
+                        <outlet property="descriptionLbl" destination="gj9-MO-XFC" id="4uG-O2-EFx"/>
+                        <outlet property="heightLbl" destination="nau-B0-PeT" id="Fho-lm-650"/>
+                        <outlet property="hpLbl" destination="JFF-48-gTc" id="Zol-ak-Tg7"/>
+                        <outlet property="mainImg" destination="pc4-BP-1bC" id="mQJ-Vt-UpC"/>
                         <outlet property="nameLbl" destination="8b2-Fi-Lou" id="J1y-l3-y4y"/>
+                        <outlet property="nextEvoImg" destination="MH7-NK-HlI" id="EzU-3b-Xma"/>
+                        <outlet property="nextEvoLbl" destination="uRR-B0-iQg" id="T5f-Ua-7uG"/>
+                        <outlet property="pokeIdLbl" destination="Qj0-ik-QAA" id="0ik-lM-3GH"/>
+                        <outlet property="speedLbl" destination="Lb6-XA-uOA" id="xwd-be-B4i"/>
+                        <outlet property="typeFirst" destination="Bkr-yH-bK9" id="UrQ-SI-SuK"/>
+                        <outlet property="typeSecond" destination="Q8C-mV-FqV" id="pJu-3f-F5t"/>
+                        <outlet property="weightLbl" destination="as9-QV-KDV" id="EGg-zu-sOc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tac-qa-saq" userLabel="First Responder" sceneMemberID="firstResponder"/>
