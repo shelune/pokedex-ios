@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10171" systemVersion="15D21" minimumToolsVersion="Xcode 7.0">
     <entity name="Pokemon" representedClassName=".Pokemon" syncable="YES">
+        <attribute name="abilities" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="attack" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="defense" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="descriptionText" optional="YES" attributeType="String" syncable="YES"/>
@@ -20,7 +21,7 @@
         <relationship name="caught" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Pokemon" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Pokemon" positionX="-63" positionY="-18" width="128" height="225"/>
+        <element name="Pokemon" positionX="-63" positionY="-18" width="128" height="240"/>
         <element name="User" positionX="-45" positionY="18" width="128" height="90"/>
     </elements>
 </model>

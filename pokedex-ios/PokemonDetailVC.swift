@@ -37,16 +37,12 @@ class PokemonDetailVC: UIViewController {
         // Do any additional setup after loading the view.
         nameLbl.text = "\(pokemon.valueForKey("name") as! String)"
         mainImg.image = UIImage(named: "\(pokemon.valueForKey("pokedexId")!.integerValue)")
+        pokeIdLbl.text = "No. \(pokemon.valueForKey("pokedexId")!.integerValue)"
 
         
         downloadPokemonDetails { () -> () in
             
         }
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
 
@@ -69,14 +65,18 @@ class PokemonDetailVC: UIViewController {
         Alamofire.request(.GET, url).responseJSON {
             response in
             if let result = response.result.value as? Dictionary<String, AnyObject> {
+                
+                // fetch weight
                 if let weight = result["weight"]?.integerValue {
-                    self.pokemon.setValue(String(weight), forKey: "weight")
+                    self.pokemon.setValue("\(Float(weight) / 10.0) kg", forKey: "weight")
                 }
                 
+                // fetch height
                 if let height = result["height"]?.integerValue {
-                    self.pokemon.setValue(String(height), forKey: "height")
+                    self.pokemon.setValue("\(Float(height) / 10.0) m", forKey: "height")
                 }
                 
+                // fetch stats
                 if let stats = result["stats"] {
                     if let speed = stats[0]["base_stat"] as? Int {
                         self.pokemon.setValue(String(speed), forKey: "speed")
@@ -95,6 +95,7 @@ class PokemonDetailVC: UIViewController {
                     }
                 }
                 
+                // fetch abilities
                 if let abilities = result["abilities"] as? [AnyObject]{
                     var abilityResult = ""
                     var abilityList = Array<AnyObject>()
@@ -103,10 +104,10 @@ class PokemonDetailVC: UIViewController {
                     }
                     for (_, value) in abilityList.enumerate() {
                         if let abilityName = value["ability"]!!["name"] {
-                            abilityResult += "\(abilityName as! String) / "
+                            abilityResult += "\((abilityName as! String).capitalizedString) / "
                         }
                     }
-                    print(abilityResult)
+                    self.pokemon.setValue(abilityResult, forKey: "abilities")
                 }
                 
                 print("weight: \(self.pokemon.valueForKey("weight") as! String)")
@@ -115,6 +116,7 @@ class PokemonDetailVC: UIViewController {
                 print("attack: \(self.pokemon.valueForKey("attack") as! String)")
                 print("defense: \(self.pokemon.valueForKey("defense") as! String)")
                 print("hp: \(self.pokemon.valueForKey("hp") as! String)")
+                print("abilities: \(self.pokemon.valueForKey("abilities") as! String)")
             } 
         }
     }
