@@ -13,14 +13,14 @@ import Alamofire
 class PokemonDetailVC: UIViewController {
     
     
+    @IBOutlet weak var speedLbl: UILabel!
+    @IBOutlet weak var defenseLbl: UILabel!
+    @IBOutlet weak var attackLbl: UILabel!
+    @IBOutlet weak var hpLbl: UILabel!
     @IBOutlet weak var nextEvoImg: UIImageView!
     @IBOutlet weak var currentEvoImg: UIImageView!
     @IBOutlet weak var nextEvoLbl: UILabel!
     @IBOutlet weak var pokeIdLbl: UILabel!
-    @IBOutlet weak var speedLbl: UILabel!
-    @IBOutlet weak var defenseLbl: UIStackView!
-    @IBOutlet weak var attackLbl: UILabel!
-    @IBOutlet weak var hpLbl: UILabel!
     @IBOutlet weak var weightLbl: UILabel!
     @IBOutlet weak var heightLbl: UILabel!
     @IBOutlet weak var abilityLbl: UILabel!
@@ -77,16 +77,44 @@ class PokemonDetailVC: UIViewController {
                     self.pokemon.setValue(String(height), forKey: "height")
                 }
                 
-                if let stats = result["stats"] as? [AnyObject] {
-                    if let speed = stats[0]["base_stat"] {
+                if let stats = result["stats"] {
+                    if let speed = stats[0]["base_stat"] as? Int {
                         self.pokemon.setValue(String(speed), forKey: "speed")
                     }
-                    //self.pokemon.setValue(result[.integerValue, forKey: "hp")
+                    
+                    if let attack = stats[4]["base_stat"] as? Int {
+                        self.pokemon.setValue(String(attack), forKey: "attack")
+                    }
+                    
+                    if let defense = stats[3]["base_stat"] as? Int {
+                        self.pokemon.setValue(String(defense), forKey: "defense")
+                    }
+                    
+                    if let hp = stats[5]["base_stat"] as? Int {
+                        self.pokemon.setValue(String(hp), forKey: "hp")
+                    }
                 }
                 
-                print("weight: \(self.pokemon.valueForKey("weight"))")
-                print("height: \(self.pokemon.valueForKey("height"))")
-                print("speed: \(self.pokemon.valueForKey("speed"))")
+                if let abilities = result["abilities"] as? [AnyObject]{
+                    var abilityResult = ""
+                    var abilityList = Array<AnyObject>()
+                    for (_, value) in abilities.enumerate() {
+                        abilityList.append(value)
+                    }
+                    for (_, value) in abilityList.enumerate() {
+                        if let abilityName = value["ability"]!!["name"] {
+                            abilityResult += "\(abilityName as! String) / "
+                        }
+                    }
+                    print(abilityResult)
+                }
+                
+                print("weight: \(self.pokemon.valueForKey("weight") as! String)")
+                print("height: \(self.pokemon.valueForKey("height") as! String)")
+                print("speed: \(self.pokemon.valueForKey("speed") as! String)")
+                print("attack: \(self.pokemon.valueForKey("attack") as! String)")
+                print("defense: \(self.pokemon.valueForKey("defense") as! String)")
+                print("hp: \(self.pokemon.valueForKey("hp") as! String)")
             } 
         }
     }

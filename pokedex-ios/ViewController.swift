@@ -54,7 +54,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             musicPlayer.prepareToPlay()
             musicPlayer.numberOfLoops = -1
             musicPlayer.play()
-        } catch let err as NSError {
+        } catch _ as NSError {
             print("Error with Audio?")
         }
     }

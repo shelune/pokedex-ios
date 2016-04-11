@@ -560,18 +560,18 @@
                     </view>
                     <connections>
                         <outlet property="abilityLbl" destination="9UP-z6-hmT" id="asr-z8-6iH"/>
-                        <outlet property="attackLbl" destination="muP-x2-1eS" id="4uJ-V8-13r"/>
+                        <outlet property="attackLbl" destination="ecl-e8-R47" id="2By-dk-fey"/>
                         <outlet property="currentEvoImg" destination="FAX-pn-1GF" id="rsm-jd-sIV"/>
-                        <outlet property="defenseLbl" destination="x5p-6k-fvH" id="TZ1-m5-VpE"/>
+                        <outlet property="defenseLbl" destination="SDd-HK-e8v" id="9fa-ty-2hk"/>
                         <outlet property="descriptionLbl" destination="gj9-MO-XFC" id="4uG-O2-EFx"/>
                         <outlet property="heightLbl" destination="nau-B0-PeT" id="Fho-lm-650"/>
-                        <outlet property="hpLbl" destination="JFF-48-gTc" id="Zol-ak-Tg7"/>
+                        <outlet property="hpLbl" destination="jA6-M3-9kF" id="HhU-1v-Jpc"/>
                         <outlet property="mainImg" destination="pc4-BP-1bC" id="mQJ-Vt-UpC"/>
                         <outlet property="nameLbl" destination="8b2-Fi-Lou" id="J1y-l3-y4y"/>
                         <outlet property="nextEvoImg" destination="MH7-NK-HlI" id="EzU-3b-Xma"/>
                         <outlet property="nextEvoLbl" destination="uRR-B0-iQg" id="T5f-Ua-7uG"/>
                         <outlet property="pokeIdLbl" destination="Qj0-ik-QAA" id="0ik-lM-3GH"/>
-                        <outlet property="speedLbl" destination="Lb6-XA-uOA" id="xwd-be-B4i"/>
+                        <outlet property="speedLbl" destination="flR-Wb-bjT" id="wfQ-RH-ecW"/>
                         <outlet property="typeFirst" destination="Bkr-yH-bK9" id="UrQ-SI-SuK"/>
                         <outlet property="typeSecond" destination="Q8C-mV-FqV" id="pJu-3f-F5t"/>
                         <outlet property="weightLbl" destination="as9-QV-KDV" id="EGg-zu-sOc"/>
