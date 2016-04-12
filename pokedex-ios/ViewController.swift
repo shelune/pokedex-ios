@@ -169,7 +169,6 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             filteredPokemons = pokemons.filter({
                 ($0.valueForKey("name") as! String).lowercaseString.rangeOfString(searchPhrase) != nil
             })
-            print(filteredPokemons)
             collectionDex.reloadData()
         }
     }
@@ -196,6 +195,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             if let detailsVC = segue.destinationViewController as? PokemonDetailVC {
                 if let pokemon = sender as? NSManagedObject {
                     detailsVC.pokemon = pokemon
+                    detailsVC.musicPlayer = musicPlayer
                 }
             }
         }

@@ -9,10 +9,12 @@
 import UIKit
 import CoreData
 import Alamofire
+import AVFoundation
 
 class PokemonDetailVC: UIViewController {
     
     
+    // label properties
     @IBOutlet weak var speedLbl: UILabel!
     @IBOutlet weak var defenseLbl: UILabel!
     @IBOutlet weak var attackLbl: UILabel!
@@ -29,6 +31,9 @@ class PokemonDetailVC: UIViewController {
     @IBOutlet weak var descriptionLbl: UILabel!
     @IBOutlet weak var mainImg: UIImageView!
     @IBOutlet weak var nameLbl: UILabel!
+    
+    // function properties
+    var musicPlayer: AVAudioPlayer!
     var pokemon: NSManagedObject!
 
     override func viewDidLoad() {
@@ -38,7 +43,6 @@ class PokemonDetailVC: UIViewController {
         nameLbl.text = "\(pokemon.valueForKey("name") as! String)"
         mainImg.image = UIImage(named: "\(pokemon.valueForKey("pokedexId")!.integerValue)")
         pokeIdLbl.text = "No. \(pokemon.valueForKey("pokedexId")!.integerValue)"
-
         
         downloadPokemonDetails { () -> () in
             
@@ -62,6 +66,7 @@ class PokemonDetailVC: UIViewController {
     
     func downloadPokemonDetails(completed: DownloadComplete) {
         let url = NSURL(string: "\(URL_BASE)\(URL_POKEMON)\(pokemon.valueForKey("pokedexId")!.integerValue)")!
+        let descriptionUrl = NSURL(string: "\(URL_BASE)\(URL_SPECIES)\(pokemon.valueForKey("pokedexId")!.integerValue)")!
         Alamofire.request(.GET, url).responseJSON {
             response in
             if let result = response.result.value as? Dictionary<String, AnyObject> {
@@ -118,6 +123,32 @@ class PokemonDetailVC: UIViewController {
                 print("hp: \(self.pokemon.valueForKey("hp") as! String)")
                 print("abilities: \(self.pokemon.valueForKey("abilities") as! String)")
             } 
+        }
+        
+        Alamofire.request(.GET, descriptionUrl).responseJSON {
+            response in
+            if let result = response.result.value as? Dictionary<String, AnyObject> {
+                if let flavorEntries = result["flavor_text_entries"] as? [AnyObject] {
+                    flavorEntries.forEach {
+                        if("\($0["language"]!!["name"] as! String)" == "en" && "\($0["version"]!!["name"] as! String)" == "omega-ruby") {
+                            if let description = $0["flavor_text"] as? String {
+                                self.pokemon.setValue(description, forKey: "descriptionText")
+                            }
+                        }
+                    }
+                }
+            }
+            print("description: \(self.pokemon.valueForKey("descriptionText") as! String)")
+        }
+    }
+    
+    @IBAction func soundBtnPressed(sender: UIButton) {
+        if musicPlayer.playing {
+            musicPlayer.stop()
+            sender.alpha = 0.2
+        } else {
+            musicPlayer.play()
+            sender.alpha = 1.0
         }
     }
 }

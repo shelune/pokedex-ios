@@ -310,6 +310,7 @@
                                         <state key="normal" image="volume-w"/>
                                         <connections>
                                             <action selector="musicBtnPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dv0-4J-nkm"/>
+                                            <action selector="soundBtnPressed:" destination="U12-JP-fpp" eventType="touchUpInside" id="zTg-Ab-9o4"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0pD-VD-xhL">
