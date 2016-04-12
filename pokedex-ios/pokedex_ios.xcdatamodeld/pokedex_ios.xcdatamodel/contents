@@ -8,7 +8,7 @@
         <attribute name="height" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="hp" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="nextEvoText" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="nextEvoId" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="pokedexId" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="speed" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="typeFirst" optional="YES" attributeType="String" syncable="YES"/>
