@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import AVFoundation
+import Alamofire
 
 class ViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UISearchBarDelegate {
 
@@ -53,7 +54,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             musicPlayer.prepareToPlay()
             musicPlayer.numberOfLoops = -1
             musicPlayer.play()
-        } catch let err as NSError {
+        } catch _ as NSError {
             print("Error with Audio?")
         }
     }
@@ -168,7 +169,6 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             filteredPokemons = pokemons.filter({
                 ($0.valueForKey("name") as! String).lowercaseString.rangeOfString(searchPhrase) != nil
             })
-            print(filteredPokemons)
             collectionDex.reloadData()
         }
     }
@@ -195,6 +195,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             if let detailsVC = segue.destinationViewController as? PokemonDetailVC {
                 if let pokemon = sender as? NSManagedObject {
                     detailsVC.pokemon = pokemon
+                    detailsVC.musicPlayer = musicPlayer
                 }
             }
         }
