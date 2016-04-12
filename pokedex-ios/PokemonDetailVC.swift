@@ -66,7 +66,7 @@ class PokemonDetailVC: UIViewController {
     
     func downloadPokemonDetails(completed: DownloadComplete) {
         let url = NSURL(string: "\(URL_BASE)\(URL_POKEMON)\(pokemon.valueForKey("pokedexId")!.integerValue)")!
-        let descriptionUrl = NSURL(string: "\(URL_BASE)\(URL_SPECIES)\(pokemon.valueForKey("pokedexId")!.integerValue)")!
+        let speciesUrl = NSURL(string: "\(URL_BASE)\(URL_SPECIES)\(pokemon.valueForKey("pokedexId")!.integerValue)")!
         Alamofire.request(.GET, url).responseJSON {
             response in
             if let result = response.result.value as? Dictionary<String, AnyObject> {
@@ -141,9 +141,11 @@ class PokemonDetailVC: UIViewController {
             } 
         }
         
-        Alamofire.request(.GET, descriptionUrl).responseJSON {
+        Alamofire.request(.GET, speciesUrl).responseJSON {
             response in
             if let result = response.result.value as? Dictionary<String, AnyObject> {
+                
+                // fetch description data
                 if let flavorEntries = result["flavor_text_entries"] as? [AnyObject] {
                     flavorEntries.forEach {
                         if("\($0["language"]!!["name"] as! String)" == "en" && "\($0["version"]!!["name"] as! String)" == "omega-ruby") {
@@ -152,6 +154,11 @@ class PokemonDetailVC: UIViewController {
                             }
                         }
                     }
+                }
+                
+                // fetch evolution data
+                if let evolutions = result["evolution_chain"] {
+                    print("Found evolution")
                 }
             }
             print("description: \(self.pokemon.valueForKey("descriptionText") as! String)")
