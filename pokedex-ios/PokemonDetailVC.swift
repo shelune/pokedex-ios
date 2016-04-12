@@ -101,7 +101,7 @@ class PokemonDetailVC: UIViewController {
                 }
                 
                 // fetch abilities
-                if let abilities = result["abilities"] as? [AnyObject]{
+                if let abilities = result["abilities"] as? [AnyObject] {
                     var abilityResult = ""
                     var abilityList = Array<AnyObject>()
                     for (_, value) in abilities.enumerate() {
@@ -115,6 +115,20 @@ class PokemonDetailVC: UIViewController {
                     self.pokemon.setValue(abilityResult, forKey: "abilities")
                 }
                 
+                // fetch types
+                
+                if let types = result["types"] as? [AnyObject] {
+                    var firstType = ""
+                    var secondType = ""
+                    firstType = types[0]["type"]!!["name"] as! String
+                    if (types.count > 1) {
+                        secondType = types[1]["type"]!!["name"] as! String
+                    }
+                    self.pokemon.setValue(firstType, forKey: "typeFirst")
+                    self.pokemon.setValue(secondType, forKey: "typeSecond")
+                    
+                }
+                
                 print("weight: \(self.pokemon.valueForKey("weight") as! String)")
                 print("height: \(self.pokemon.valueForKey("height") as! String)")
                 print("speed: \(self.pokemon.valueForKey("speed") as! String)")
@@ -122,6 +136,8 @@ class PokemonDetailVC: UIViewController {
                 print("defense: \(self.pokemon.valueForKey("defense") as! String)")
                 print("hp: \(self.pokemon.valueForKey("hp") as! String)")
                 print("abilities: \(self.pokemon.valueForKey("abilities") as! String)")
+                print("type 1: \(self.pokemon.valueForKey("typeFirst") as! String)")
+                print("type 2: \(self.pokemon.valueForKey("typeSecond") as! String)")
             } 
         }
         
