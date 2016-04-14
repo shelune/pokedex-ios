@@ -26,8 +26,8 @@ class PokemonDetailVC: UIViewController {
     @IBOutlet weak var weightLbl: UILabel!
     @IBOutlet weak var heightLbl: UILabel!
     @IBOutlet weak var abilityLbl: UILabel!
-    @IBOutlet weak var typeSecond: UIImageView!
-    @IBOutlet weak var typeFirst: UIImageView!
+    @IBOutlet weak var mainTypeImg: UIImageView!
+    @IBOutlet weak var secondaryTypeImg: UIImageView!
     @IBOutlet weak var descriptionLbl: UILabel!
     @IBOutlet weak var mainImg: UIImageView!
     @IBOutlet weak var nameLbl: UILabel!
@@ -43,9 +43,10 @@ class PokemonDetailVC: UIViewController {
         nameLbl.text = "\(pokemon.valueForKey("name") as! String)"
         mainImg.image = UIImage(named: "\(pokemon.valueForKey("pokedexId")!.integerValue)")
         pokeIdLbl.text = "No. \(pokemon.valueForKey("pokedexId")!.integerValue)"
+        currentEvoImg.image = UIImage(named: "\(pokemon.valueForKey("pokedexId")!.integerValue)")
         
         downloadPokemonDetails { () -> () in
-            
+            self.updateUI()
         }
     }
     
@@ -67,6 +68,9 @@ class PokemonDetailVC: UIViewController {
     func downloadPokemonDetails(completed: DownloadComplete) {
         let url = NSURL(string: "\(URL_BASE)\(URL_POKEMON)\(pokemon.valueForKey("pokedexId")!.integerValue)")!
         let speciesUrl = NSURL(string: "\(URL_BASE)\(URL_SPECIES)\(pokemon.valueForKey("pokedexId")!.integerValue)")!
+        let evolutionUrl = NSURL(string: "\(URL_BASE_ALT)\(URL_POKEMON)\(pokemon.valueForKey("pokedexId")!.integerValue)")!
+        
+        // fetch technical data
         Alamofire.request(.GET, url).responseJSON {
             response in
             if let result = response.result.value as? Dictionary<String, AnyObject> {
@@ -120,48 +124,116 @@ class PokemonDetailVC: UIViewController {
                 if let types = result["types"] as? [AnyObject] {
                     var firstType = ""
                     var secondType = ""
-                    firstType = types[0]["type"]!!["name"] as! String
+                    firstType = (types[0]["type"]!!["name"] as! String)
                     if (types.count > 1) {
-                        secondType = types[1]["type"]!!["name"] as! String
+                        secondType = (types[1]["type"]!!["name"] as! String)
                     }
                     self.pokemon.setValue(firstType, forKey: "typeFirst")
                     self.pokemon.setValue(secondType, forKey: "typeSecond")
                     
                 }
-                
-                print("weight: \(self.pokemon.valueForKey("weight") as! String)")
-                print("height: \(self.pokemon.valueForKey("height") as! String)")
-                print("speed: \(self.pokemon.valueForKey("speed") as! String)")
-                print("attack: \(self.pokemon.valueForKey("attack") as! String)")
-                print("defense: \(self.pokemon.valueForKey("defense") as! String)")
-                print("hp: \(self.pokemon.valueForKey("hp") as! String)")
-                print("abilities: \(self.pokemon.valueForKey("abilities") as! String)")
-                print("type 1: \(self.pokemon.valueForKey("typeFirst") as! String)")
-                print("type 2: \(self.pokemon.valueForKey("typeSecond") as! String)")
-            } 
+                completed()
+            }
         }
         
+        // fetch evolution data
+        Alamofire.request(.GET, evolutionUrl).responseJSON {
+            response in
+            if let result = response.result.value {
+                // check for mega evolution
+                if let evolutions = result["evolutions"] as? Array<AnyObject> {
+                    if evolutions.count > 0 {
+                        if let mega = evolutions[0]["detail"] as? String {
+                            self.pokemon.setValue(99999, forKey: "nextEvoId")
+                        } else {
+                            if let nextEvo = evolutions[0]["resource_uri"] as? String {
+                                if let range = nextEvo.rangeOfString("n/") {
+                                    let evoIdString = nextEvo.substringFromIndex(range.endIndex)
+                                    let evoId = Int(String(evoIdString.characters.dropLast()))
+                                    self.pokemon.setValue(evoId, forKey: "nextEvoId")
+                                }
+                            }
+                        }
+                    } else {
+                        self.pokemon.setValue(99999, forKey: "nextEvoId")
+                    }
+                } else {
+                    self.pokemon.setValue(99999, forKey: "nextEvoId")
+                }
+            }
+            completed()
+            print("next evo id: \(self.pokemon.valueForKey("nextEvoId")!.integerValue)")
+        }
+        
+        // fetch description data
         Alamofire.request(.GET, speciesUrl).responseJSON {
             response in
             if let result = response.result.value as? Dictionary<String, AnyObject> {
-                
-                // fetch description data
                 if let flavorEntries = result["flavor_text_entries"] as? [AnyObject] {
                     flavorEntries.forEach {
-                        if("\($0["language"]!!["name"] as! String)" == "en" && "\($0["version"]!!["name"] as! String)" == "omega-ruby") {
+                        if("\($0["language"]!!["name"] as! String)" == "en" && "\($0["version"]!!["name"] as! String)" == "alpha-sapphire") {
                             if let description = $0["flavor_text"] as? String {
                                 self.pokemon.setValue(description, forKey: "descriptionText")
                             }
                         }
                     }
                 }
-                
-                // fetch evolution data
-                if let evolutions = result["evolution_chain"] {
-                    print("Found evolution")
-                }
             }
-            print("description: \(self.pokemon.valueForKey("descriptionText") as! String)")
+            completed()
+        }
+    }
+    
+    func updateUI() {
+        if let height = self.pokemon.valueForKey("height") {
+            heightLbl.text = "\(height as! String)"
+        }
+        
+        if let weight = self.pokemon.valueForKey("weight") {
+            weightLbl.text = "\(weight as! String)"
+        }
+        
+        if let attack = self.pokemon.valueForKey("attack") {
+            attackLbl.text = "\(attack as! String)"
+        }
+        
+        if let defense = self.pokemon.valueForKey("defense") {
+            defenseLbl.text = "\(defense as! String)"
+        }
+        
+        if let speed = self.pokemon.valueForKey("speed") {
+            speedLbl.text = "\(speed as! String)"
+        }
+        
+        if let hp = self.pokemon.valueForKey("hp") {
+            hpLbl.text = "\(hp as! String)"
+        }
+        
+        if let desc = self.pokemon.valueForKey("descriptionText") {
+            descriptionLbl.text = "\(desc as! String)"
+        }
+        
+        if let ability = self.pokemon.valueForKey("abilities") {
+            abilityLbl.text = "\(ability as! String)"
+        }
+        
+        if let typeFirst = self.pokemon.valueForKey("typeFirst") {
+            mainTypeImg.image = UIImage(named: "type-\(typeFirst as! String)")
+        }
+        
+        if let typeSecond = self.pokemon.valueForKey("typeSecond") as? String {
+            if typeSecond == "" || typeSecond.isEmpty {
+                secondaryTypeImg.alpha = 0.0
+            } else {
+                secondaryTypeImg.image = UIImage(named: "type-\(typeSecond)")
+            }
+        }
+        
+        if let nextEvo = self.pokemon.valueForKey("nextEvoId") as? Int {
+            if nextEvo == 99999 {
+                nextEvoImg.image = UIImage(named: "99999")
+            } else {
+                nextEvoImg.image = UIImage(named: "\(nextEvo)")
+            }
         }
     }
     
