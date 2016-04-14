@@ -128,11 +128,11 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             for row in rows {
                 let pokeId = Int(row["id"]!)!
                 let name = row["identifier"]?.capitalizedString
-                let entity = NSEntityDescription.entityForName("Pokemon", inManagedObjectContext: managedContext)
-                let poke = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedContext)
+                let entityPokemon = NSEntityDescription.entityForName("Pokemon", inManagedObjectContext: managedContext)
+                let poke = NSManagedObject(entity: entityPokemon!, insertIntoManagedObjectContext: managedContext)
+                
                 poke.setValue(name, forKey: "name")
                 poke.setValue(pokeId, forKey: "pokedexId")
-                
                 
                 pokemons.append(poke)
             }
@@ -201,7 +201,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "PokemonDetailVC" {
             if let detailsVC = segue.destinationViewController as? PokemonDetailVC {
-                if let pokemon = sender as? NSManagedObject {
+                if let pokemon = sender as? Pokemon {
                     detailsVC.pokemon = pokemon
                     detailsVC.musicPlayer = musicPlayer
                 }

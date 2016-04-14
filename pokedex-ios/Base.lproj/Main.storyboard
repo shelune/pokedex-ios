@@ -377,14 +377,14 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="Bmv-lm-Vpy">
                                                 <rect key="frame" x="140" y="0.0" width="140" height="26"/>
                                                 <subviews>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="type-default" translatesAutoresizingMaskIntoConstraints="NO" id="Bkr-yH-bK9">
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="type-default" translatesAutoresizingMaskIntoConstraints="NO" id="Bkr-yH-bK9">
                                                         <rect key="frame" x="0.0" y="0.0" width="59" height="13"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="59" id="8nD-Ny-db0"/>
                                                             <constraint firstAttribute="height" constant="13" id="dBS-na-jc3"/>
                                                         </constraints>
                                                     </imageView>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="type-default" translatesAutoresizingMaskIntoConstraints="NO" id="Q8C-mV-FqV">
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="type-default" translatesAutoresizingMaskIntoConstraints="NO" id="Q8C-mV-FqV">
                                                         <rect key="frame" x="0.0" y="13" width="59" height="13"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="59" id="qTX-c8-ZOr"/>
