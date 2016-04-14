@@ -59,6 +59,14 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         }
     }
     
+    func initUser() {
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let managedContext = appDelegate.managedObjectContext
+        let entityUser = NSEntityDescription.entityForName("User", inManagedObjectContext: managedContext)
+        let user = NSManagedObject(entity: entityUser!, insertIntoManagedObjectContext: managedContext)
+        
+    }
+    
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         var pokemon: NSManagedObject!
         if inSearchMode {

@@ -68,7 +68,9 @@ class PokemonDetailVC: UIViewController {
     func downloadPokemonDetails(completed: DownloadComplete) {
         let url = NSURL(string: "\(URL_BASE)\(URL_POKEMON)\(pokemon.valueForKey("pokedexId")!.integerValue)")!
         let speciesUrl = NSURL(string: "\(URL_BASE)\(URL_SPECIES)\(pokemon.valueForKey("pokedexId")!.integerValue)")!
-        let nextSpeciesUrl = NSURL(string: "\(URL_BASE)\(URL_SPECIES)\(pokemon.valueForKey("pokedexId")!.integerValue + 1)")!
+        let evolutionUrl = NSURL(string: "\(URL_BASE_ALT)\(URL_POKEMON)\(pokemon.valueForKey("pokedexId")!.integerValue)")!
+        
+        // fetch technical data
         Alamofire.request(.GET, url).responseJSON {
             response in
             if let result = response.result.value as? Dictionary<String, AnyObject> {
@@ -130,42 +132,43 @@ class PokemonDetailVC: UIViewController {
                     self.pokemon.setValue(secondType, forKey: "typeSecond")
                     
                 }
-                
-                print("weight: \(self.pokemon.valueForKey("weight") as! String)")
-                print("height: \(self.pokemon.valueForKey("height") as! String)")
-                print("speed: \(self.pokemon.valueForKey("speed") as! String)")
-                print("attack: \(self.pokemon.valueForKey("attack") as! String)")
-                print("defense: \(self.pokemon.valueForKey("defense") as! String)")
-                print("hp: \(self.pokemon.valueForKey("hp") as! String)")
-                print("abilities: \(self.pokemon.valueForKey("abilities") as! String)")
-                print("type 1: \(self.pokemon.valueForKey("typeFirst") as! String)")
-                print("type 2: \(self.pokemon.valueForKey("typeSecond") as! String)")
-                
                 completed()
             }
         }
         
-        Alamofire.request(.GET, nextSpeciesUrl).responseJSON {
+        // fetch evolution data
+        Alamofire.request(.GET, evolutionUrl).responseJSON {
             response in
-            if let result = response.result.value as? Dictionary<String, AnyObject> {
-                // fetch evolution data
-                if let evolutionChain = result["evolves_from_species"] {
-                    if evolutionChain["name"] != nil {
-                       self.pokemon.setValue((self.pokemon.valueForKey("pokedexId")!.integerValue + 1), forKey: "nextEvoId")
+            if let result = response.result.value {
+                // check for mega evolution
+                if let evolutions = result["evolutions"] as? Array<AnyObject> {
+                    if evolutions.count > 0 {
+                        if let mega = evolutions[0]["detail"] as? String {
+                            self.pokemon.setValue(99999, forKey: "nextEvoId")
+                        } else {
+                            if let nextEvo = evolutions[0]["resource_uri"] as? String {
+                                if let range = nextEvo.rangeOfString("n/") {
+                                    let evoIdString = nextEvo.substringFromIndex(range.endIndex)
+                                    let evoId = Int(String(evoIdString.characters.dropLast()))
+                                    self.pokemon.setValue(evoId, forKey: "nextEvoId")
+                                }
+                            }
+                        }
                     } else {
                         self.pokemon.setValue(99999, forKey: "nextEvoId")
                     }
+                } else {
+                    self.pokemon.setValue(99999, forKey: "nextEvoId")
                 }
             }
             completed()
             print("next evo id: \(self.pokemon.valueForKey("nextEvoId")!.integerValue)")
         }
         
+        // fetch description data
         Alamofire.request(.GET, speciesUrl).responseJSON {
             response in
             if let result = response.result.value as? Dictionary<String, AnyObject> {
-                
-                // fetch description data
                 if let flavorEntries = result["flavor_text_entries"] as? [AnyObject] {
                     flavorEntries.forEach {
                         if("\($0["language"]!!["name"] as! String)" == "en" && "\($0["version"]!!["name"] as! String)" == "alpha-sapphire") {
@@ -177,7 +180,6 @@ class PokemonDetailVC: UIViewController {
                 }
             }
             completed()
-            print("description: \(self.pokemon.valueForKey("descriptionText") as! String)")
         }
     }
     
