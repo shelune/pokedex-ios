@@ -69,11 +69,11 @@ class PokemonDetailVC: UIViewController {
     
     func updateUI() {
         if let height = self.pokemon.valueForKey("height") {
-            heightLbl.text = "\(height as! String)"
+            heightLbl.text = "\(height.floatValue) m"
         }
         
         if let weight = self.pokemon.valueForKey("weight") {
-            weightLbl.text = "\(weight as! String)"
+            weightLbl.text = "\(weight.floatValue) kg"
         }
         
         if let attack = self.pokemon.valueForKey("attack") {

@@ -12,6 +12,10 @@ import Alamofire
 
 class Pokemon : NSManagedObject {
     
+    func setId(id: Int) {
+        self.pokedexId = id
+    }
+    
     func downloadPokemonDetails(completed: DownloadComplete) {
         let url = NSURL(string: "\(URL_BASE)\(URL_POKEMON)\(pokedexId!.integerValue)")!
         let speciesUrl = NSURL(string: "\(URL_BASE)\(URL_SPECIES)\(pokedexId!.integerValue)")!
@@ -24,14 +28,19 @@ class Pokemon : NSManagedObject {
             response in
             if let result = response.result.value as? Dictionary<String, AnyObject> {
                 
+                // fetch name
+                if let name = result["name"] as? String {
+                    self.name = name.capitalizedString
+                }
+                
                 // fetch weight
-                if let weight = result["weight"]?.integerValue {
-                    self.weight = "\(weight)"
+                if let weight = result["weight"]?.floatValue {
+                    self.weight = weight / 10.0
                 }
                 
                 // fetch height
-                if let height = result["height"]?.integerValue {
-                    self.height = "\(height)"
+                if let height = result["height"]?.floatValue {
+                    self.height = height / 10.0
                 }
                 
                 // fetch stats
