@@ -168,11 +168,23 @@
                                             <action selector="musicBtnPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="NME-fO-epH"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="31m-Du-k5a">
+                                        <rect key="frame" x="8" y="14" width="67" height="30"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <state key="normal" title="Back">
+                                            <color key="titleColor" red="0.98320600270000003" green="0.98733520509999995" blue="0.98344896979999996" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="backBtnPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="epE-uY-wGm"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.17254901959999999" green="0.54117647059999996" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
+                                    <constraint firstItem="31m-Du-k5a" firstAttribute="centerY" secondItem="oTb-8U-7eo" secondAttribute="centerY" id="C5l-i4-6TK"/>
                                     <constraint firstItem="QsD-Rz-g7N" firstAttribute="centerY" secondItem="oTb-8U-7eo" secondAttribute="centerY" id="Hq8-z3-J19"/>
                                     <constraint firstItem="QsD-Rz-g7N" firstAttribute="centerX" secondItem="oTb-8U-7eo" secondAttribute="centerX" id="VQ8-zU-O96"/>
+                                    <constraint firstItem="31m-Du-k5a" firstAttribute="leading" secondItem="oTb-8U-7eo" secondAttribute="leading" constant="16" id="cpc-aS-wY4"/>
                                     <constraint firstAttribute="trailingMargin" secondItem="KjE-mz-ch3" secondAttribute="trailing" constant="8" id="jaR-0R-6bv"/>
                                     <constraint firstItem="KjE-mz-ch3" firstAttribute="centerY" secondItem="oTb-8U-7eo" secondAttribute="centerY" id="p8F-7q-ikB"/>
                                     <constraint firstAttribute="height" constant="60" id="xKb-3i-Z0N"/>
@@ -591,7 +603,7 @@
                                             <action selector="soundBtnPressed:" destination="U12-JP-fpp" eventType="touchUpInside" id="zTg-Ab-9o4"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0pD-VD-xhL">
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0pD-VD-xhL">
                                         <rect key="frame" x="14" y="16" width="46" height="30"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <state key="normal" title="Back">
@@ -607,7 +619,9 @@
                                     <constraint firstItem="8b2-Fi-Lou" firstAttribute="centerY" secondItem="rrK-e3-ad5" secondAttribute="centerY" id="Beu-xQ-NQJ"/>
                                     <constraint firstItem="8b2-Fi-Lou" firstAttribute="centerX" secondItem="rrK-e3-ad5" secondAttribute="centerX" id="CDq-5i-0Hy"/>
                                     <constraint firstItem="qR0-iT-xW2" firstAttribute="centerY" secondItem="rrK-e3-ad5" secondAttribute="centerY" id="Nfm-If-hPd"/>
+                                    <constraint firstItem="0pD-VD-xhL" firstAttribute="leading" secondItem="rrK-e3-ad5" secondAttribute="leading" constant="16" id="ZNm-q4-6iv"/>
                                     <constraint firstAttribute="height" constant="60" id="gOO-Rl-ahM"/>
+                                    <constraint firstItem="0pD-VD-xhL" firstAttribute="centerY" secondItem="rrK-e3-ad5" secondAttribute="centerY" id="hQ8-OY-ijX"/>
                                     <constraint firstAttribute="trailingMargin" secondItem="qR0-iT-xW2" secondAttribute="trailing" constant="8" id="qIV-op-MgV"/>
                                 </constraints>
                             </view>
