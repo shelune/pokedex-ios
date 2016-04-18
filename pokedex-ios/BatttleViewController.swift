@@ -68,12 +68,4 @@ class BatttleViewController: UIViewController {
         }
 
     }
-    
-    @IBAction func lightAtkPressed(sender: AnyObject) {
-        
-    }
-    
-    @IBAction func heavyAtkPressed(sender: AnyObject) {
-        
-    }
 }

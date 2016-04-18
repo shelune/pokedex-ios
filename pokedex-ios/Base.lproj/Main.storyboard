@@ -448,33 +448,8 @@
                                             </imageView>
                                         </subviews>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="GUt-h0-qkL">
-                                        <rect key="frame" x="0.0" y="171" width="288" height="30"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b5e-Js-m4k">
-                                                <rect key="frame" x="0.0" y="0.0" width="136" height="30"/>
-                                                <color key="backgroundColor" red="0.17254901959999999" green="0.54117647059999996" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
-                                                <state key="normal" title="Light Attack">
-                                                    <color key="titleColor" red="0.98320600270000003" green="0.98733520509999995" blue="0.98344896979999996" alpha="1" colorSpace="calibratedRGB"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="lightAtkPressed:" destination="Dsj-jx-wun" eventType="touchUpInside" id="EDI-7j-BeH"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mDZ-Ht-awQ">
-                                                <rect key="frame" x="152" y="0.0" width="136" height="30"/>
-                                                <color key="backgroundColor" red="0.17254901959999999" green="0.54117647059999996" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
-                                                <state key="normal" title="Heavy Attack">
-                                                    <color key="titleColor" red="0.98320600270000003" green="0.98733520509999995" blue="0.98344896979999996" alpha="1" colorSpace="calibratedRGB"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="heavyAtkPressed:" destination="Dsj-jx-wun" eventType="touchUpInside" id="jb4-Le-Poe"/>
-                                                </connections>
-                                            </button>
-                                        </subviews>
-                                    </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="xlz-qa-lba">
-                                        <rect key="frame" x="0.0" y="276" width="288" height="96"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="xlz-qa-lba">
+                                        <rect key="frame" x="0.0" y="171" width="288" height="96"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="380" translatesAutoresizingMaskIntoConstraints="NO" id="Ddf-c5-Vhq">
                                                 <rect key="frame" x="0.0" y="0.0" width="96" height="96"/>
@@ -538,6 +513,25 @@
                                             </stackView>
                                         </subviews>
                                     </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="GUt-h0-qkL">
+                                        <rect key="frame" x="0.0" y="342" width="288" height="30"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b5e-Js-m4k">
+                                                <rect key="frame" x="0.0" y="0.0" width="136" height="30"/>
+                                                <color key="backgroundColor" red="0.17254901959999999" green="0.54117647059999996" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
+                                                <state key="normal" title="Light Attack">
+                                                    <color key="titleColor" red="0.98320600270000003" green="0.98733520509999995" blue="0.98344896979999996" alpha="1" colorSpace="calibratedRGB"/>
+                                                </state>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mDZ-Ht-awQ">
+                                                <rect key="frame" x="152" y="0.0" width="136" height="30"/>
+                                                <color key="backgroundColor" red="0.17254901959999999" green="0.54117647059999996" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
+                                                <state key="normal" title="Heavy Attack">
+                                                    <color key="titleColor" red="0.98320600270000003" green="0.98733520509999995" blue="0.98344896979999996" alpha="1" colorSpace="calibratedRGB"/>
+                                                </state>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
                                 </subviews>
                             </stackView>
                         </subviews>
@@ -568,7 +562,6 @@
                         <outlet property="activeHPValue" destination="GHx-8f-SEp" id="QYu-BG-VV6"/>
                         <outlet property="activeImg" destination="Ddf-c5-Vhq" id="7E8-ha-cfU"/>
                         <outlet property="activeName" destination="LJF-9n-1Qe" id="UWR-py-B2T"/>
-                        <outlet property="lightAtkPressed" destination="b5e-Js-m4k" id="zW8-Aw-hRs"/>
                         <outlet property="opponentAtkValue" destination="Kl1-hA-bP5" id="pqW-Rb-PXp"/>
                         <outlet property="opponentDefValue" destination="tj5-P5-hv5" id="IZW-6k-JX3"/>
                         <outlet property="opponentHPValue" destination="Y2d-3G-kAo" id="cTw-yJ-Or0"/>
