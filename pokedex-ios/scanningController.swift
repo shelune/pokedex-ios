@@ -27,7 +27,6 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
     
     }
     
-    
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         if status == CLAuthorizationStatus.AuthorizedWhenInUse {
             if CLLocationManager.isMonitoringAvailableForClass(CLBeaconRegion.self) {
@@ -62,7 +61,7 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
-    @IBAction func onBattleTriggered(sender: UIButton) {
+    @IBAction func onBattleTriggered(sender: AnyObject) {
         opponentId = Int(arc4random_uniform(UInt32(719)))
         
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -92,8 +91,9 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
         }
          */
     }
-    
-    @IBAction func imageTapped(sender: UIButton!) {
-        print("button not working?")
+    @IBAction func activePokemonPressed(sender: AnyObject) {
+        performSegueWithIdentifier("ViewController", sender: nil)
     }
+    
+    
 }
