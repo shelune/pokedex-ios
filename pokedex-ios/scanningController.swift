@@ -8,12 +8,15 @@
 
 import CoreLocation
 import UIKit
+import CoreData
 
 class scanningController: UIViewController, CLLocationManagerDelegate {
     
     // MARK: Properties
     var locationManager: CLLocationManager!
     var foundBeacon = false
+    var opponentId = 0
+    
     @IBOutlet weak var detectionLabel: UILabel!
     
     override func viewDidLoad() {
@@ -54,6 +57,29 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
             }
         } else {
             
+        }
+    }
+    
+    @IBAction func onBattleTriggered(sender: AnyObject) {
+        opponentId = Int(arc4random_uniform(UInt32(719)))
+        
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let managedContext = appDelegate.managedObjectContext
+        let entityPokemon = NSEntityDescription.entityForName("Pokemon", inManagedObjectContext: managedContext)
+        let poke = NSManagedObject(entity: entityPokemon!, insertIntoManagedObjectContext: managedContext)
+        
+        poke.setValue(opponentId, forKey: "pokedexId")
+        
+        performSegueWithIdentifier("BattleViewController", sender: poke)
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "BattleViewController" {
+            if let battleVC = segue.destinationViewController as? BatttleViewController {
+                if let poke = sender as? Pokemon {
+                    battleVC.opponentPokemon = poke
+                }
+            }
         }
     }
     

@@ -14,8 +14,8 @@ import Alamofire
 class ViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UISearchBarDelegate {
 
     @IBOutlet weak var collectionDex: UICollectionView!
-    @IBOutlet weak var collectionTeam: UICollectionView!
     
+    @IBOutlet weak var activePokemonImg: UIImageView!
     @IBOutlet weak var searchBar: UISearchBar!
     
     var pokemons = [NSManagedObject]()
@@ -28,23 +28,23 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         
         // setting up delegation & data source
         collectionDex.delegate = self
-        collectionTeam.delegate = self
         
         collectionDex.dataSource = self
-        collectionTeam.dataSource = self
         
         searchBar.delegate = self
         searchBar.returnKeyType = UIReturnKeyType.Done
         
         // reset transparent background for collection view
         collectionDex.backgroundColor = UIColor.clearColor()
-        collectionTeam.backgroundColor = UIColor.clearColor()
         
         // parsing data from csv
         parsePokemonCSV()
         
         // music
         initAudio()
+        
+        // user
+        initUser()
     }
     
     func initAudio() {
@@ -63,8 +63,50 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         let managedContext = appDelegate.managedObjectContext
         let entityUser = NSEntityDescription.entityForName("User", inManagedObjectContext: managedContext)
+        let entityPokemon = NSEntityDescription.entityForName("Pokemon", inManagedObjectContext: managedContext)
+        
+        // declare user
         let user = NSManagedObject(entity: entityUser!, insertIntoManagedObjectContext: managedContext)
         
+        // declare starter
+        let bulbasaur = NSManagedObject(entity: entityPokemon!, insertIntoManagedObjectContext: managedContext)
+        bulbasaur.setValue(1, forKey: "pokedexId")
+        bulbasaur.setValue("Bulbasaur", forKey: "name")
+        user.setValue(bulbasaur, forKey: "active")
+        activePokemonImg.image = UIImage(named: "\(bulbasaur.valueForKey("pokedexId")!.integerValue)")
+        
+        // declare caught?
+        let charmander = NSManagedObject(entity: entityPokemon!, insertIntoManagedObjectContext: managedContext)
+        charmander.setValue(4, forKey: "pokedexId")
+        charmander.setValue("Charmander", forKey: "name")
+        
+        let squirtle = NSManagedObject(entity: entityPokemon!, insertIntoManagedObjectContext: managedContext)
+        squirtle.setValue(7, forKey: "pokedexId")
+        squirtle.setValue("Squirtle", forKey: "name")
+        
+        squirtle.setValue(user, forKey: "owned")
+        charmander.setValue(user, forKey: "owned")
+        
+        // create fetch request
+        let fetchRequest = NSFetchRequest(entityName: "Pokemon")
+        
+        // add sort descriptor
+        let sortDescriptor = NSSortDescriptor(key: "pokedexId", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        
+        // do fetch request
+        do {
+            let result = try managedContext.executeFetchRequest(fetchRequest)
+            
+            for managedObject in result {
+                if let user = managedObject.valueForKey("owned") as? User {
+                    print("owned by: \(user.caught)")
+                }
+            }
+        } catch {
+            let fetchError = error as NSError
+            print(fetchError)
+        }
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
@@ -80,14 +122,9 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCellWithReuseIdentifier("PokeCell", forIndexPath: indexPath) as? PokeCell {
-            
+                
             let pokemon: NSManagedObject!
-            
-            if inSearchMode {
-                pokemon = filteredPokemons[indexPath.row]
-            } else {
-                pokemon = pokemons[indexPath.row]
-            }
+            pokemon = pokemons[indexPath.row]
             cell.configureCell(pokemon)
             return cell
         } else {
@@ -96,13 +133,10 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if (collectionView.tag == 1) {
-            if inSearchMode {
-                return filteredPokemons.count
-            }
-            return pokemons.count
+        if inSearchMode {
+            return filteredPokemons.count
         }
-        return 3
+        return pokemons.count
     }
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
@@ -114,8 +148,6 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     }
     
     // Parsing
-    
-    
     func parsePokemonCSV() {
         let path = NSBundle.mainBundle().pathForResource("pokemon", ofType: "csv")!
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -128,11 +160,11 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             for row in rows {
                 let pokeId = Int(row["id"]!)!
                 let name = row["identifier"]?.capitalizedString
-                let entity = NSEntityDescription.entityForName("Pokemon", inManagedObjectContext: managedContext)
-                let poke = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedContext)
+                let entityPokemon = NSEntityDescription.entityForName("Pokemon", inManagedObjectContext: managedContext)
+                let poke = NSManagedObject(entity: entityPokemon!, insertIntoManagedObjectContext: managedContext)
+                
                 poke.setValue(name, forKey: "name")
                 poke.setValue(pokeId, forKey: "pokedexId")
-                
                 
                 pokemons.append(poke)
             }
@@ -201,7 +233,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "PokemonDetailVC" {
             if let detailsVC = segue.destinationViewController as? PokemonDetailVC {
-                if let pokemon = sender as? NSManagedObject {
+                if let pokemon = sender as? Pokemon {
                     detailsVC.pokemon = pokemon
                     detailsVC.musicPlayer = musicPlayer
                 }
