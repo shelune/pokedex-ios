@@ -84,6 +84,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         squirtle.setValue(7, forKey: "pokedexId")
         squirtle.setValue("Squirtle", forKey: "name")
         
+        bulbasaur.setValue(user, forKey: "owned")
         squirtle.setValue(user, forKey: "owned")
         charmander.setValue(user, forKey: "owned")
         
@@ -97,12 +98,19 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         // do fetch request
         do {
             let result = try managedContext.executeFetchRequest(fetchRequest)
+            var ownedIds = [Int]()
             
             for managedObject in result {
-                if let user = managedObject.valueForKey("owned") as? User {
-                    print("owned by: \(user.caught)")
+                if managedObject.valueForKey("owned") != nil {
+                    if let ownedId = managedObject.valueForKey("pokedexId") as? Int {
+                        ownedIds.append(ownedId)
+                    }
                 }
             }
+            
+            pokemons = pokemons.filter({
+                ownedIds.contains(($0.valueForKey("pokedexId") as! Int))
+            })
         } catch {
             let fetchError = error as NSError
             print(fetchError)
@@ -228,7 +236,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         }
     }
     
-    //
+    // prepare for detail view
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "PokemonDetailVC" {

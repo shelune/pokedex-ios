@@ -24,7 +24,9 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
         locationManager = CLLocationManager()
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
+    
     }
+    
     
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         if status == CLAuthorizationStatus.AuthorizedWhenInUse {
@@ -60,7 +62,7 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
-    @IBAction func onBattleTriggered(sender: AnyObject) {
+    @IBAction func onBattleTriggered(sender: UIButton) {
         opponentId = Int(arc4random_uniform(UInt32(719)))
         
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -81,9 +83,17 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
                 }
             }
         }
+        
+        /*
+        if segue.identifier == "ViewController" {
+            if let collectionVC = segue.destinationViewController as? ViewController {
+                
+            }
+        }
+         */
     }
     
-    func mainLoop() {
-        
+    @IBAction func imageTapped(sender: UIButton!) {
+        print("button not working?")
     }
 }
