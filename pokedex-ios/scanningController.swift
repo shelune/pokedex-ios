@@ -24,6 +24,7 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
         locationManager = CLLocationManager()
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
+    
     }
     
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
@@ -81,9 +82,18 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
                 }
             }
         }
+        
+        /*
+        if segue.identifier == "ViewController" {
+            if let collectionVC = segue.destinationViewController as? ViewController {
+                
+            }
+        }
+         */
+    }
+    @IBAction func activePokemonPressed(sender: AnyObject) {
+        performSegueWithIdentifier("ViewController", sender: nil)
     }
     
-    func mainLoop() {
-        
-    }
+    
 }

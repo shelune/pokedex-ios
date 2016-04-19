@@ -84,6 +84,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         squirtle.setValue(7, forKey: "pokedexId")
         squirtle.setValue("Squirtle", forKey: "name")
         
+        bulbasaur.setValue(user, forKey: "owned")
         squirtle.setValue(user, forKey: "owned")
         charmander.setValue(user, forKey: "owned")
         
@@ -97,12 +98,19 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         // do fetch request
         do {
             let result = try managedContext.executeFetchRequest(fetchRequest)
+            var ownedIds = [Int]()
             
             for managedObject in result {
-                if let user = managedObject.valueForKey("owned") as? User {
-                    print("owned by: \(user.caught)")
+                if managedObject.valueForKey("owned") != nil {
+                    if let ownedId = managedObject.valueForKey("pokedexId") as? Int {
+                        ownedIds.append(ownedId)
+                    }
                 }
             }
+            
+            pokemons = pokemons.filter({
+                ownedIds.contains(($0.valueForKey("pokedexId") as! Int))
+            })
         } catch {
             let fetchError = error as NSError
             print(fetchError)
@@ -147,7 +155,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         return CGSize(width: 80, height: 80)
     }
     
-    // Parsing
+    // Parsing data
     func parsePokemonCSV() {
         let path = NSBundle.mainBundle().pathForResource("pokemon", ofType: "csv")!
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -173,30 +181,6 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         }
     }
     
-    override func viewWillAppear(animated: Bool) {
-        /*
-        super.viewWillAppear(animated)
-        
-        //1
-        let appDelegate =
-            UIApplication.sharedApplication().delegate as! AppDelegate
-        
-        let managedContext = appDelegate.managedObjectContext
-        
-        //2
-        let fetchRequest = NSFetchRequest(entityName: "Pokemon")
-        
-        //3
-        do {
-            let results =
-                try managedContext.executeFetchRequest(fetchRequest)
-                pokemons = results as! [NSManagedObject]
-        } catch let error as NSError {
-            print("Could not fetch \(error), \(error.userInfo)")
-        }
-         */
-    }
-    
     // filter search phrase
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
         if searchBar.text == nil || (searchBar.text?.isEmpty)! {
@@ -213,6 +197,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         }
     }
     
+    // remove the keyboard when clicked search
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         view.endEditing(true)
     }
@@ -228,8 +213,12 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         }
     }
     
-    //
+    // go back to scanning view
+    @IBAction func backBtnPressed(sender: AnyObject) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
     
+    // prepare for detail view
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "PokemonDetailVC" {
             if let detailsVC = segue.destinationViewController as? PokemonDetailVC {
