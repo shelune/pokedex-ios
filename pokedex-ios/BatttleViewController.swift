@@ -6,6 +6,7 @@
 //  Copyright © 2016 iosdev. All rights reserved.
 //
 
+import CoreData
 import UIKit
 
 class BatttleViewController: UIViewController {
@@ -14,13 +15,23 @@ class BatttleViewController: UIViewController {
     var opponentPokemon: Pokemon!
     var activePokemon: Pokemon!
     
+    var opponentId: Int!
+    var opponentHP: Int!
+    var opponentDefence: Int!
+    var opponentAttack: Int!
+    
+    var activeId: Int!
+    var activeHP: Int!
+    var activeDefence: Int!
+    var activeAttack: Int!
+    
+    
     // interaction properties
     @IBOutlet weak var opponentImg: UIImageView!
     @IBOutlet weak var opponentName: UILabel!
     @IBOutlet weak var opponentDefValue: UILabel!
     @IBOutlet weak var opponentHPValue: UILabel!
     @IBOutlet weak var opponentAtkValue: UILabel!
-    
     
     @IBOutlet weak var activeImg: UIImageView!
     @IBOutlet weak var activeName: UILabel!
@@ -35,9 +46,20 @@ class BatttleViewController: UIViewController {
         opponentImg.image = UIImage(named: "\(opponentPokemon.valueForKey("pokedexId")!.integerValue)")
         
         
+        
         opponentPokemon.downloadPokemonDetails { () -> () in
             self.updateUI()
+            self.opponentId = self.opponentPokemon.valueForKey("pokedexId")!.integerValue
+            self.opponentHP = self.opponentPokemon.valueForKey("hp")!.integerValue
+            self.opponentDefence = self.opponentPokemon.valueForKey("defense")!.integerValue
+            self.opponentAttack = self.opponentPokemon.valueForKey("attack")!.integerValue
         }
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let managedContext = appDelegate.managedObjectContext
+        let entityUser = NSEntityDescription.entityForName("User", inManagedObjectContext: managedContext)
+        let user = NSManagedObject(entity: entityUser!, insertIntoManagedObjectContext: managedContext)
+        
+        print(user.valueForKey("active"))
     }
 
     /*
@@ -67,5 +89,9 @@ class BatttleViewController: UIViewController {
             opponentHPValue.text = "\(hp as! String)"
         }
 
+    }
+    
+    func battleLoop() {
+        
     }
 }

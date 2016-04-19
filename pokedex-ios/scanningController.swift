@@ -24,6 +24,8 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
         locationManager = CLLocationManager()
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
+        
+        initUser()
     }
     
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
@@ -83,7 +85,53 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
-    func mainLoop() {
+    func initUser() {
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let managedContext = appDelegate.managedObjectContext
+        let entityUser = NSEntityDescription.entityForName("User", inManagedObjectContext: managedContext)
+        let entityPokemon = NSEntityDescription.entityForName("Pokemon", inManagedObjectContext: managedContext)
         
+        // declare user
+        let user = NSManagedObject(entity: entityUser!, insertIntoManagedObjectContext: managedContext)
+        
+        // declare starter
+        let bulbasaur = NSManagedObject(entity: entityPokemon!, insertIntoManagedObjectContext: managedContext)
+        bulbasaur.setValue(1, forKey: "pokedexId")
+        bulbasaur.setValue("Bulbasaur", forKey: "name")
+        user.setValue(bulbasaur, forKey: "active")
+        //activePokemonImg.image = UIImage(named: "\(bulbasaur.valueForKey("pokedexId")!.integerValue)")
+        
+        // declare caught?
+        let charmander = NSManagedObject(entity: entityPokemon!, insertIntoManagedObjectContext: managedContext)
+        charmander.setValue(4, forKey: "pokedexId")
+        charmander.setValue("Charmander", forKey: "name")
+        
+        let squirtle = NSManagedObject(entity: entityPokemon!, insertIntoManagedObjectContext: managedContext)
+        squirtle.setValue(7, forKey: "pokedexId")
+        squirtle.setValue("Squirtle", forKey: "name")
+        
+        squirtle.setValue(user, forKey: "owned")
+        charmander.setValue(user, forKey: "owned")
+        
+        // create fetch request
+        let fetchRequest = NSFetchRequest(entityName: "Pokemon")
+        
+        // add sort descriptor
+        let sortDescriptor = NSSortDescriptor(key: "pokedexId", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        
+        // do fetch request
+        do {
+            let result = try managedContext.executeFetchRequest(fetchRequest)
+            
+            for managedObject in result {
+                if let user = managedObject.valueForKey("owned") as? User {
+                    print("owned by: \(user.caught)")
+                }
+            }
+        } catch {
+            let fetchError = error as NSError
+            print(fetchError)
+        }
     }
 }
