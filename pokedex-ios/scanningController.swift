@@ -134,4 +134,6 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
             print(fetchError)
         }
     }
+    
+    
 }
