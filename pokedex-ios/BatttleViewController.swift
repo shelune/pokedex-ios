@@ -15,7 +15,6 @@ class BatttleViewController: UIViewController {
     var opponentPokemon: Pokemon!
     var activePokemon: Pokemon!
     
-    var opponentId: Int!
     var opponentHP: Int!
     var opponentDefence: Int!
     var opponentAttack: Int!
@@ -42,24 +41,38 @@ class BatttleViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print(opponentPokemon)
-        opponentImg.image = UIImage(named: "\(opponentPokemon.valueForKey("pokedexId")!.integerValue)")
-        
         
         
         opponentPokemon.downloadPokemonDetails { () -> () in
-            self.updateUI()
-            self.opponentId = self.opponentPokemon.valueForKey("pokedexId")!.integerValue
-            self.opponentHP = self.opponentPokemon.valueForKey("hp")!.integerValue
-            self.opponentDefence = self.opponentPokemon.valueForKey("defense")!.integerValue
-            self.opponentAttack = self.opponentPokemon.valueForKey("attack")!.integerValue
+            self.updateStats()
         }
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         let managedContext = appDelegate.managedObjectContext
-        let entityUser = NSEntityDescription.entityForName("User", inManagedObjectContext: managedContext)
-        let user = NSManagedObject(entity: entityUser!, insertIntoManagedObjectContext: managedContext)
+        let entityPokemon = NSEntityDescription.entityForName("Pokemon", inManagedObjectContext: managedContext)
+        let activePokemonNSObject = NSManagedObject(entity: entityPokemon!, insertIntoManagedObjectContext: managedContext)
         
-        print(user.valueForKey("active"))
+        
+        let fetchRequest = NSFetchRequest(entityName: "User")
+        
+        do {
+            let result = try managedContext.executeFetchRequest(fetchRequest)
+            
+            if let active = result[0].valueForKey("active") {
+                if let pokedexId = active.valueForKey("pokedexId") as? Int {
+                    activePokemonNSObject.setValue(pokedexId, forKey: "pokedexId")
+                    if let poke = activePokemonNSObject as? Pokemon {
+                        poke.downloadPokemonDetails { () -> () in
+                            self.activePokemon = poke
+                            self.updateStats()
+                        }
+                    }
+                }
+            }
+        } catch {
+            print("Step error")
+            let fetchError = error as NSError
+            print(fetchError)
+        }
     }
 
     /*
@@ -72,26 +85,62 @@ class BatttleViewController: UIViewController {
     }
     */
     
-    func updateUI() {
+    func updateStats() {
+        opponentImg.image = UIImage(named: "\(opponentPokemon.valueForKey("pokedexId")!.integerValue)")
+        activeImg.image = UIImage(named: "\(activePokemon.valueForKey("pokedexId")!.integerValue)")
         if let name = self.opponentPokemon.valueForKey("name") {
             opponentName.text = "\(name as! String)"
         }
-        
-        if let attack = self.opponentPokemon.valueForKey("attack") {
-            opponentAtkValue.text = "\(attack as! String)"
+        if let nameActive = self.activePokemon.valueForKey("name") {
+            activeName.text = "\(nameActive as! String)"
         }
         
-        if let defense = self.opponentPokemon.valueForKey("defense") {
-            opponentDefValue.text = "\(defense as! String)"
+        if let attack = self.opponentPokemon.valueForKey("attack") as? String {
+            opponentAtkValue.text = "\(attack)"
+            opponentAttack = Int(attack)
+        }
+        if let attackActive = self.activePokemon.valueForKey("attack") as? String {
+            activeAtkValue.text = "\(attackActive)"
+            activeAttack = Int(attackActive)
         }
         
-        if let hp = self.opponentPokemon.valueForKey("hp") {
-            opponentHPValue.text = "\(hp as! String)"
+        if let defense = self.opponentPokemon.valueForKey("defense") as? String {
+            opponentDefValue.text = "\(defense)"
+            opponentDefence = Int(defense)
         }
-
+        if let defenseActive = self.activePokemon.valueForKey("defense") as? String {
+            activeDefValue.text = "\(defenseActive)"
+            activeDefence = Int(defenseActive)
+        }
+        
+        if let hp = self.opponentPokemon.valueForKey("hp") as? String {
+            opponentHPValue.text = "\(hp)"
+            opponentHP = Int(hp)
+        }
+        if let hpActive = self.activePokemon.valueForKey("hp") as? String {
+            activeHPValue.text = "\(hpActive)"
+            activeHP = Int(hpActive)
+        }
     }
     
     func battleLoop() {
-        
+        while opponentHP > 0 {
+            
+        }
+    }
+    
+    func randomizer() -> Int {
+        return Int(arc4random_uniform(UInt32(15))) + 85
+    }
+    
+    // MARK: Attacks
+    func heavyAttack() {
+        /*opponentHP = opponentHP -
+            (((( 2 * 10 / 5 + 2) * attackPowerHere * 60 / opponentDefence) / 50 ) * 1 * randomizer() / 100 )*/
+    }
+    
+    func lightAttack() {
+        /*opponentHP = opponentHP -
+            (((( 2 * 10 / 5 + 2) * attackPowerHere * 40 / opponentDefence) / 50 ) * Resistance * RandomNumber / 100 )*/
     }
 }

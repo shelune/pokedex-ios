@@ -83,6 +83,17 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
                 }
             }
         }
+        
+        /*
+        if segue.identifier == "ViewController" {
+            if let collectionVC = segue.destinationViewController as? ViewController {
+                
+            }
+        }
+         */
+    }
+    @IBAction func activePokemonPressed(sender: AnyObject) {
+        performSegueWithIdentifier("ViewController", sender: nil)
     }
     
     func initUser() {
@@ -110,6 +121,7 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
         squirtle.setValue(7, forKey: "pokedexId")
         squirtle.setValue("Squirtle", forKey: "name")
         
+        bulbasaur.setValue(user, forKey: "owned")
         squirtle.setValue(user, forKey: "owned")
         charmander.setValue(user, forKey: "owned")
         
@@ -123,17 +135,22 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
         // do fetch request
         do {
             let result = try managedContext.executeFetchRequest(fetchRequest)
+            var ownedIds = [Int]()
             
             for managedObject in result {
-                if let user = managedObject.valueForKey("owned") as? User {
-                    print("owned by: \(user.caught)")
+                if managedObject.valueForKey("owned") != nil {
+                    if let ownedId = managedObject.valueForKey("pokedexId") as? Int {
+                        ownedIds.append(ownedId)
+                    }
                 }
             }
+            
+            /*pokemons = pokemons.filter({
+                ownedIds.contains(($0.valueForKey("pokedexId") as! Int))
+            })*/
         } catch {
             let fetchError = error as NSError
             print(fetchError)
         }
     }
-    
-    
 }
