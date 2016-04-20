@@ -87,7 +87,13 @@ class BatttleViewController: UIViewController {
     
     func updateStats() {
         opponentImg.image = UIImage(named: "\(opponentPokemon.valueForKey("pokedexId")!.integerValue)")
-        activeImg.image = UIImage(named: "\(activePokemon.valueForKey("pokedexId")!.integerValue)")
+        print(activePokemon.valueForKey("pokedexId"))
+        
+        /*
+        if let active = activePokemon.valueForKey("pokedexId") as? Int {
+            activeImg.image = UIImage(named: "\(active)")
+        } */
+        //activeImg.image = UIImage(named: "\(activePokemon.valueForKey("pokedexId")!.integerValue)")
         if let name = self.opponentPokemon.valueForKey("name") {
             opponentName.text = "\(name as! String)"
         }
@@ -122,25 +128,66 @@ class BatttleViewController: UIViewController {
             activeHP = Int(hpActive)
         }
     }
-    
-    func battleLoop() {
-        while opponentHP > 0 {
-            
-        }
+    func updateHealth() {
+        opponentHPValue.text = "\(opponentHP)"
+        activeHPValue.text = "\(activeHP)"
     }
     
     func randomizer() -> Int {
         return Int(arc4random_uniform(UInt32(15))) + 85
     }
-    
-    // MARK: Attacks
-    func heavyAttack() {
-        /*opponentHP = opponentHP -
-            (((( 2 * 10 / 5 + 2) * attackPowerHere * 60 / opponentDefence) / 50 ) * 1 * randomizer() / 100 )*/
+    func hitChance() -> Int {
+        return Int(arc4random_uniform(UInt32(100)))
     }
     
-    func lightAttack() {
-        /*opponentHP = opponentHP -
-            (((( 2 * 10 / 5 + 2) * attackPowerHere * 40 / opponentDefence) / 50 ) * Resistance * RandomNumber / 100 )*/
+    // MARK: Attacks
+    @IBAction func lightAttack(sender: UIButton) {
+        if opponentHP <= 0 {
+            print("You win!")
+        } else if activeHP <= 0 {
+            print("You lose!")
+        } else {
+            activeLightAttack()
+            opponentLightAttack()
+        }
+    }
+    
+    @IBAction func heavyAttack(sender: UIButton) {
+        if opponentHP <= 0 {
+            print("You win!")
+        } else if activeHP <= 0 {
+            print("You lose!")
+        } else {
+            if hitChance() <= 75 {
+                activeHeavyAttack()
+            } else {
+                print("You missed!")
+            }
+            if hitChance() <= 75 {
+                opponentHeavyAttack()
+            } else {
+                print("Opponent missed!")
+            }
+        }
+    }
+    
+    func activeLightAttack() {
+        opponentHP = opponentHP - (((( 2 * 10 / 5 + 2) * activeAttack * 40 / opponentDefence) / 50 ) * 1 * randomizer() / 100 )
+        updateHealth()
+    }
+    
+    func activeHeavyAttack() {
+        opponentHP = opponentHP - (((( 2 * 10 / 5 + 2) * activeAttack * 60 / opponentDefence) / 50 ) * 1 * randomizer() / 100 )
+        updateHealth()
+    }
+    
+    func opponentLightAttack() {
+        activeHP = activeHP - (((( 2 * 10 / 5 + 2) * opponentAttack * 40 / activeDefence) / 50 ) * 1 * randomizer() / 100 )
+        updateHealth()
+    }
+    
+    func opponentHeavyAttack() {
+        activeHP = activeHP - (((( 2 * 10 / 5 + 2) * opponentAttack * 60 / activeDefence) / 50 ) * 1 * randomizer() / 100 )
+        updateHealth()
     }
 }

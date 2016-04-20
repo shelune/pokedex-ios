@@ -107,7 +107,7 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
         
         // declare starter
         let bulbasaur = NSManagedObject(entity: entityPokemon!, insertIntoManagedObjectContext: managedContext)
-        bulbasaur.setValue(1, forKey: "pokedexId")
+        bulbasaur.setValue(113, forKey: "pokedexId")
         bulbasaur.setValue("Bulbasaur", forKey: "name")
         user.setValue(bulbasaur, forKey: "active")
         //activePokemonImg.image = UIImage(named: "\(bulbasaur.valueForKey("pokedexId")!.integerValue)")
