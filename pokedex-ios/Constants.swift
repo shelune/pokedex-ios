@@ -6,6 +6,7 @@
 //  Copyright © 2016 iosdev. All rights reserved.
 //
 
+import CoreData
 import Foundation
 
 let URL_BASE = "http://pokeapi.co/api/v2"
