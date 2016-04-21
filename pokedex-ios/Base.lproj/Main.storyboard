@@ -127,6 +127,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activePokemonBtn" destination="iyh-O8-bUv" id="pxz-wC-BQV"/>
                         <outlet property="detectionLabel" destination="srm-1V-wiC" id="EQE-NN-qRb"/>
                         <segue destination="Dsj-jx-wun" kind="show" identifier="BattleViewController" id="ezL-9m-nJa"/>
                         <segue destination="BYZ-38-t0r" kind="showDetail" identifier="ViewController" action="showViewController:sender:" id="K66-Y4-eEc"/>

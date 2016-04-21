@@ -26,29 +26,56 @@ class PokeCell: UICollectionViewCell {
     func configureCell(pokemon: NSManagedObject) {
         self.pokemon = pokemon
         
-        nameLbl.text = self.pokemon.valueForKey("name") as? String
-        thumbImg.image = UIImage(named: "\(self.pokemon.valueForKey("pokedexId")!)")
+        if let name = self.pokemon.valueForKey("name") as? String {
+            nameLbl.text = name
+        }
         
-        var longPressRecognizer = UILongPressGestureRecognizer()
+        if let pokedexId = self.pokemon.valueForKey("pokedexId") as? Int {
+            thumbImg.image = UIImage(named: "\(pokedexId)")
+            self.tag = pokedexId
+            
+        }
+        
+        let longPressRecognizer = UILongPressGestureRecognizer()
         longPressRecognizer.addTarget(self, action: "longPressCell:")
         thumbImg.addGestureRecognizer(longPressRecognizer)
         thumbImg.userInteractionEnabled = true
     }
     
     func longPressCell(sender: UIImageView) {
-        var parentView = self.superview?.superview
+        var chosenPokemonId: Int!
+        let parentView = self.superview?.superview
         if let subviews = parentView?.subviews {
             for subview in subviews {
                 if subview.tag == 999999 {
-                    var imgViews = subview.subviews
+                    let imgViews = subview.subviews
                     for imgView in imgViews {
                         if let imgView = imgView as? UIImageView {
                             imgView.image = thumbImg.image
+                            imgView.tag = self.tag
                         }
                     }
                 }
             }
         }
+        
+        rectifyActive(self.tag)
+    }
+    
+    func rectifyActive(newActive: Int) {
+        let cdInstance = CoreDataInit.instance
+        let user = cdInstance.entityUser()
+        let allPoke = cdInstance.searchEntity("Pokemon")
+        
+        let currentActiveId = cdInstance.searchForActive()
+        print("current active: \(currentActiveId)")
+        
+        // reset and set new active
+        cdInstance.searchForPoke(currentActiveId).setValue(nil, forKey: "chosen")
+        cdInstance.searchForPoke(newActive).setValue(user, forKey: "chosen")
+        
+        print("new active: \(newActive)")
+        
     }
     
 }
