@@ -37,13 +37,12 @@ class PokeCell: UICollectionViewCell {
         }
         
         let longPressRecognizer = UILongPressGestureRecognizer()
-        longPressRecognizer.addTarget(self, action: "longPressCell:")
+        longPressRecognizer.addTarget(self, action: #selector(PokeCell.longPressCell(_:)))
         thumbImg.addGestureRecognizer(longPressRecognizer)
         thumbImg.userInteractionEnabled = true
     }
     
     func longPressCell(sender: UIImageView) {
-        var chosenPokemonId: Int!
         let parentView = self.superview?.superview
         if let subviews = parentView?.subviews {
             for subview in subviews {
@@ -65,7 +64,6 @@ class PokeCell: UICollectionViewCell {
     func rectifyActive(newActive: Int) {
         let cdInstance = CoreDataInit.instance
         let user = cdInstance.entityUser()
-        let allPoke = cdInstance.searchEntity("Pokemon")
         
         let currentActiveId = cdInstance.searchForActive()
         print("current active: \(currentActiveId)")

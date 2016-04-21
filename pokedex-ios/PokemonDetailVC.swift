@@ -44,7 +44,9 @@ class PokemonDetailVC: UIViewController {
         mainImg.image = UIImage(named: "\(pokemon.valueForKey("pokedexId")!.integerValue)")
         pokeIdLbl.text = "No. \(pokemon.valueForKey("pokedexId")!.integerValue)"
         currentEvoImg.image = UIImage(named: "\(pokemon.valueForKey("pokedexId")!.integerValue)")
-        
+    }
+    
+    override func viewWillAppear(animated: Bool) {
         pokemon.downloadPokemonDetails { () -> () in
             self.updateUI()
         }

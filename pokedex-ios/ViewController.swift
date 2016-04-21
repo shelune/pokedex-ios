@@ -21,9 +21,9 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     @IBOutlet weak var collectionCellImg: UIImageView!
     var pokemons = [NSManagedObject]()
     var filteredPokemons = [NSManagedObject]()
-    var musicPlayer: AVAudioPlayer!
     var inSearchMode = false
     var activeId: Int!
+    var musicPlayer: AVAudioPlayer!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,14 +45,14 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         filterOwned()
         setActive()
         
-        // music
         initAudio()
         
         print("Collection Dex View loaded")
     }
     
     func initAudio() {
-        let path = NSBundle.mainBundle().pathForResource("main-theme", ofType: "mp3")
+        musicPlayer.stop()
+        let path = NSBundle.mainBundle().pathForResource("collection-theme", ofType: "mp3")
         do {
             musicPlayer = try AVAudioPlayer(contentsOfURL: NSURL(string: path!)!)
             musicPlayer.prepareToPlay()
@@ -132,7 +132,6 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         let cdInstance = CoreDataInit.instance
         
         var ownedIds = cdInstance.searchForOwned()
-        
         pokemons = pokemons.filter({
             ownedIds.contains(($0.valueForKey("pokedexId") as! Int))
         })
@@ -151,10 +150,13 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             collectionDex.reloadData()
         } else {
             inSearchMode = true
+            print("searching")
             let searchPhrase = searchBar.text!.lowercaseString
+            print(searchPhrase)
             filteredPokemons = pokemons.filter({
                 ($0.valueForKey("name") as! String).lowercaseString.rangeOfString(searchPhrase) != nil
             })
+            print(filteredPokemons)
             collectionDex.reloadData()
         }
     }

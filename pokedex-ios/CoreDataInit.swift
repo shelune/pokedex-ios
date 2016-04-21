@@ -47,7 +47,6 @@ class CoreDataInit {
     
     func searchForActive() -> Int {
         let allPoke = self.searchEntity("Pokemon")
-        var activeId: Int!
         
         for poke in allPoke {
             if let poke = poke as? NSManagedObject {
