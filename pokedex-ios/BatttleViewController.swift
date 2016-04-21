@@ -38,40 +38,26 @@ class BatttleViewController: UIViewController {
     @IBOutlet weak var activeHPValue: UILabel!
     @IBOutlet weak var activeDefValue: UILabel!
     
+    override func viewWillAppear(animated: Bool) {
+        opponentPokemon.downloadPokemonDetails { () -> () in
+            
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let instance = CoreDataInit.instance
+        let user = instance.entityUser()
         
-        
-        opponentPokemon.downloadPokemonDetails { () -> () in
-            self.updateStats()
-        }
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        let managedContext = appDelegate.managedObjectContext
-        let entityPokemon = NSEntityDescription.entityForName("Pokemon", inManagedObjectContext: managedContext)
-        let activePokemonNSObject = NSManagedObject(entity: entityPokemon!, insertIntoManagedObjectContext: managedContext)
-        
-        
-        let fetchRequest = NSFetchRequest(entityName: "User")
-        
-        do {
-            let result = try managedContext.executeFetchRequest(fetchRequest)
-            
-            if let active = result[0].valueForKey("active") {
-                if let pokedexId = active.valueForKey("pokedexId") as? Int {
-                    activePokemonNSObject.setValue(pokedexId, forKey: "pokedexId")
-                    if let poke = activePokemonNSObject as? Pokemon {
-                        poke.downloadPokemonDetails { () -> () in
-                            self.activePokemon = poke
-                            self.updateStats()
-                        }
-                    }
-                }
+        let activePokemon = instance.entityPokemon()
+        let activePokemonId = instance.searchForActive()
+        activePokemon.setValue(activePokemonId, forKey: "pokedexId")
+        if let poke = activePokemon as? Pokemon {
+            poke.downloadPokemonDetails { () -> () in
+                self.activePokemon = poke
+                self.updateStats()
             }
-        } catch {
-            print("Step error")
-            let fetchError = error as NSError
-            print(fetchError)
         }
     }
 
@@ -87,13 +73,15 @@ class BatttleViewController: UIViewController {
     
     func updateStats() {
         opponentImg.image = UIImage(named: "\(opponentPokemon.valueForKey("pokedexId")!.integerValue)")
-        print(activePokemon.valueForKey("pokedexId"))
+        //print(activePokemon.valueForKey("pokedexId"))
+        print(activePokemon)
         
-        /*
         if let active = activePokemon.valueForKey("pokedexId") as? Int {
             activeImg.image = UIImage(named: "\(active)")
-        } */
-        //activeImg.image = UIImage(named: "\(activePokemon.valueForKey("pokedexId")!.integerValue)")
+            print(active)
+        } else {
+            print("NOOOOO!")
+        }
         if let name = self.opponentPokemon.valueForKey("name") {
             opponentName.text = "\(name as! String)"
         }

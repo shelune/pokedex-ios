@@ -133,17 +133,14 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
         
         // declare starter
         let bulbasaur = instance.entityPokemon()
-        bulbasaur.setValue(1, forKey: "pokedexId")
-        bulbasaur.setValue("Bulbasaur", forKey: "name")
+        bulbasaur.setValue(718, forKey: "pokedexId")
         
         // declare caught
         let charmander = instance.entityPokemon()
         charmander.setValue(4, forKey: "pokedexId")
-        charmander.setValue("Charmander", forKey: "name")
         
         let squirtle = instance.entityPokemon()
         squirtle.setValue(7, forKey: "pokedexId")
-        squirtle.setValue("Squirtle", forKey: "name")
         
         // set active & caught relationship
         bulbasaur.setValue(user, forKey: "owned")
