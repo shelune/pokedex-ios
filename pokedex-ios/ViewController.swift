@@ -14,10 +14,11 @@ import Alamofire
 class ViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UISearchBarDelegate {
 
     @IBOutlet weak var collectionDex: UICollectionView!
-    
+
     @IBOutlet weak var activePokemonImg: UIImageView!
     @IBOutlet weak var searchBar: UISearchBar!
     
+    @IBOutlet weak var collectionCellImg: UIImageView!
     var pokemons = [NSManagedObject]()
     var filteredPokemons = [NSManagedObject]()
     var musicPlayer: AVAudioPlayer!
@@ -28,7 +29,6 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         
         // setting up delegation & data source
         collectionDex.delegate = self
-        
         collectionDex.dataSource = self
         
         searchBar.delegate = self
@@ -57,27 +57,24 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     }
     
     func initUser() {
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        let managedContext = appDelegate.managedObjectContext
-        let entityUser = NSEntityDescription.entityForName("User", inManagedObjectContext: managedContext)
-        let entityPokemon = NSEntityDescription.entityForName("Pokemon", inManagedObjectContext: managedContext)
+        let instance = CoreDataInit.instance
         
         // declare user
-        let user = NSManagedObject(entity: entityUser!, insertIntoManagedObjectContext: managedContext)
+        let user = instance.entityUser()
         
         // declare starter
-        let bulbasaur = NSManagedObject(entity: entityPokemon!, insertIntoManagedObjectContext: managedContext)
+        let bulbasaur = instance.entityPokemon()
         bulbasaur.setValue(1, forKey: "pokedexId")
         bulbasaur.setValue("Bulbasaur", forKey: "name")
         user.setValue(bulbasaur, forKey: "active")
         activePokemonImg.image = UIImage(named: "\(bulbasaur.valueForKey("pokedexId")!.integerValue)")
         
         // declare caught?
-        let charmander = NSManagedObject(entity: entityPokemon!, insertIntoManagedObjectContext: managedContext)
+        let charmander = instance.entityPokemon()
         charmander.setValue(4, forKey: "pokedexId")
         charmander.setValue("Charmander", forKey: "name")
         
-        let squirtle = NSManagedObject(entity: entityPokemon!, insertIntoManagedObjectContext: managedContext)
+        let squirtle = instance.entityPokemon()
         squirtle.setValue(7, forKey: "pokedexId")
         squirtle.setValue("Squirtle", forKey: "name")
         
@@ -85,33 +82,25 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         squirtle.setValue(user, forKey: "owned")
         charmander.setValue(user, forKey: "owned")
         
-        // create fetch request
-        let fetchRequest = NSFetchRequest(entityName: "Pokemon")
+        // fetch request
+        let allPoke = instance.searchEntity("Pokemon")
+        var ownedIds = [Int]()
         
-        // add sort descriptor
-        let sortDescriptor = NSSortDescriptor(key: "pokedexId", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptor]
-        
-        // do fetch request
-        do {
-            let result = try managedContext.executeFetchRequest(fetchRequest)
-            var ownedIds = [Int]()
-            
-            for managedObject in result {
-                if managedObject.valueForKey("owned") != nil {
-                    if let ownedId = managedObject.valueForKey("pokedexId") as? Int {
-                        ownedIds.append(ownedId)
+        for poke in allPoke {
+            if let poke = poke as? NSManagedObject {
+                if poke.valueForKey("owned") != nil {
+                    if let pokemonId = poke.valueForKey("pokedexId") as? Int {
+                        ownedIds.append(pokemonId)
                     }
                 }
             }
-            
-            pokemons = pokemons.filter({
-                ownedIds.contains(($0.valueForKey("pokedexId") as! Int))
-            })
-        } catch {
-            let fetchError = error as NSError
-            print(fetchError)
         }
+        
+        print(ownedIds)
+        
+        pokemons = pokemons.filter({
+            ownedIds.contains(($0.valueForKey("pokedexId") as! Int))
+        })
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
@@ -192,6 +181,11 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             })
             collectionDex.reloadData()
         }
+    }
+    
+    // long press the collection cell
+    func longPressCell() {
+        print("this cell is long pressed")
     }
     
     // remove the keyboard when clicked search
