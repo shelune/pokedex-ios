@@ -46,6 +46,9 @@
                                                 <exclude reference="bcd-Pf-9kR"/>
                                             </mask>
                                         </variation>
+                                        <connections>
+                                            <action selector="soundBtnPressed:" destination="2vP-MD-l7U" eventType="touchUpInside" id="Fg4-MQ-CKl"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.17254901959999999" green="0.54117647059999996" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -94,7 +97,7 @@
                                             <constraint firstAttribute="width" constant="96" id="lOY-NI-gYu"/>
                                             <constraint firstAttribute="height" constant="96" id="wMW-tF-Azl"/>
                                         </constraints>
-                                        <state key="normal" backgroundImage="384"/>
+                                        <state key="normal" backgroundImage="0"/>
                                         <connections>
                                             <action selector="activePokemonPressed:" destination="2vP-MD-l7U" eventType="touchUpInside" id="bcK-Wb-9BM"/>
                                         </connections>
@@ -167,6 +170,7 @@
                                         <state key="normal" image="volume-w"/>
                                         <connections>
                                             <action selector="musicBtnPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="NME-fO-epH"/>
+                                            <action selector="soundBtnPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="1xL-D0-98t"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="31m-Du-k5a">
@@ -210,7 +214,7 @@
                             <view userInteractionEnabled="NO" tag="999999" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f7c-SE-JSw">
                                 <rect key="frame" x="0.0" y="480" width="600" height="120"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="384" translatesAutoresizingMaskIntoConstraints="NO" id="Sob-8Q-GJ3">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="Sob-8Q-GJ3">
                                         <rect key="frame" x="252" y="12" width="96" height="96"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="96" id="Y1o-ZJ-U7s"/>
@@ -331,6 +335,9 @@
                                                 <exclude reference="dni-zt-7GJ"/>
                                             </mask>
                                         </variation>
+                                        <connections>
+                                            <action selector="soundBtnPressed:" destination="Dsj-jx-wun" eventType="touchUpInside" id="F9J-EB-8Dm"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.17254901959999999" green="0.54117647059999996" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -451,8 +458,8 @@
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="N20-Lo-hj7">
                                                         <rect key="frame" x="166" y="0.0" width="96" height="96"/>
                                                     </imageView>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rayquaza" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sh2-Ya-L2M">
-                                                        <rect key="frame" x="175" y="96" width="78" height="21"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="???" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sh2-Ya-L2M">
+                                                        <rect key="frame" x="201" y="96" width="27" height="21"/>
                                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                                         <color key="textColor" red="0.17254901959999999" green="0.54117647059999996" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
@@ -470,8 +477,8 @@
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="Ddf-c5-Vhq">
                                                         <rect key="frame" x="96" y="0.0" width="96" height="96"/>
                                                     </imageView>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Latias" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LJF-9n-1Qe">
-                                                        <rect key="frame" x="119" y="96" width="50" height="21"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="???" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LJF-9n-1Qe">
+                                                        <rect key="frame" x="130" y="96" width="28" height="21"/>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                                         <color key="textColor" red="0.17254901959999999" green="0.54117647059999996" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
@@ -940,7 +947,6 @@
     <resources>
         <image name="0" width="96" height="96"/>
         <image name="1" width="96" height="96"/>
-        <image name="384" width="96" height="96"/>
         <image name="background" width="1000" height="720"/>
         <image name="type-default" width="59" height="13"/>
         <image name="volume-w" width="512" height="512"/>

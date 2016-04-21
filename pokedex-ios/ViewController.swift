@@ -21,9 +21,9 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     @IBOutlet weak var collectionCellImg: UIImageView!
     var pokemons = [NSManagedObject]()
     var filteredPokemons = [NSManagedObject]()
-    var musicPlayer: AVAudioPlayer!
     var inSearchMode = false
     var activeId: Int!
+    var musicPlayer: AVAudioPlayer!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,22 +45,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         filterOwned()
         setActive()
         
-        // music
-        initAudio()
-        
         print("Collection Dex View loaded")
-    }
-    
-    func initAudio() {
-        let path = NSBundle.mainBundle().pathForResource("main-theme", ofType: "mp3")
-        do {
-            musicPlayer = try AVAudioPlayer(contentsOfURL: NSURL(string: path!)!)
-            musicPlayer.prepareToPlay()
-            musicPlayer.numberOfLoops = -1
-            musicPlayer.play()
-        } catch _ as NSError {
-            print("Error with Audio?")
-        }
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {

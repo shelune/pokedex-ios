@@ -9,10 +9,12 @@
 import CoreLocation
 import UIKit
 import CoreData
+import AVFoundation
 
 class scanningController: UIViewController, CLLocationManagerDelegate {
     
     // MARK: Properties
+    var musicPlayer: AVAudioPlayer!
     var locationManager: CLLocationManager!
     var foundBeacon = false
     var opponentId = 0
@@ -29,13 +31,27 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
         locationManager.requestWhenInUseAuthorization()
         
         initUser()
+        initAudio()
         
+        // set active pokemon at the footer
         setActive()
     }
     
     override func viewWillAppear(animated: Bool) {
         setActive()
         print("View re appear now")
+    }
+    
+    func initAudio() {
+        let path = NSBundle.mainBundle().pathForResource("main-theme", ofType: "mp3")
+        do {
+            musicPlayer = try AVAudioPlayer(contentsOfURL: NSURL(string: path!)!)
+            musicPlayer.prepareToPlay()
+            musicPlayer.numberOfLoops = -1
+            musicPlayer.play()
+        } catch _ as NSError {
+            print("Error with Audio?")
+        }
     }
     
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
@@ -111,12 +127,14 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
                     battleVC.opponentPokemon = poke
                 }
             }
+            musicPlayer.stop()
         }
         
         if segue.identifier == "ViewController" {
             if let dexVC = segue.destinationViewController as? ViewController {
                 if let activeId = sender as? Int {
                     dexVC.activeId = activeId
+                    dexVC.musicPlayer = musicPlayer
                 }
             }
         }
@@ -146,6 +164,17 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
         bulbasaur.setValue(user, forKey: "owned")
         squirtle.setValue(user, forKey: "owned")
         charmander.setValue(user, forKey: "owned")
+        bulbasaur.setValue(user, forKey: "chosen")
         user.setValue(bulbasaur, forKey: "active")
+    }
+    
+    @IBAction func soundBtnPressed(sender: UIButton) {
+        if musicPlayer.playing {
+            musicPlayer.stop()
+            sender.alpha = 0.2
+        } else {
+            musicPlayer.play()
+            sender.alpha = 1.0
+        }
     }
 }
