@@ -42,9 +42,6 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         
         // music
         initAudio()
-        
-        // user
-        initUser()
     }
     
     func initAudio() {

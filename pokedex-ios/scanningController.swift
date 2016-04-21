@@ -24,7 +24,8 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
         locationManager = CLLocationManager()
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
-    
+        
+        initUser()
     }
     
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
@@ -95,5 +96,61 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
         performSegueWithIdentifier("ViewController", sender: nil)
     }
     
-    
+    func initUser() {
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let managedContext = appDelegate.managedObjectContext
+        let entityUser = NSEntityDescription.entityForName("User", inManagedObjectContext: managedContext)
+        let entityPokemon = NSEntityDescription.entityForName("Pokemon", inManagedObjectContext: managedContext)
+        
+        // declare user
+        let user = NSManagedObject(entity: entityUser!, insertIntoManagedObjectContext: managedContext)
+        
+        // declare starter
+        let bulbasaur = NSManagedObject(entity: entityPokemon!, insertIntoManagedObjectContext: managedContext)
+        bulbasaur.setValue(113, forKey: "pokedexId")
+        bulbasaur.setValue("Bulbasaur", forKey: "name")
+        user.setValue(bulbasaur, forKey: "active")
+        //activePokemonImg.image = UIImage(named: "\(bulbasaur.valueForKey("pokedexId")!.integerValue)")
+        
+        // declare caught?
+        let charmander = NSManagedObject(entity: entityPokemon!, insertIntoManagedObjectContext: managedContext)
+        charmander.setValue(4, forKey: "pokedexId")
+        charmander.setValue("Charmander", forKey: "name")
+        
+        let squirtle = NSManagedObject(entity: entityPokemon!, insertIntoManagedObjectContext: managedContext)
+        squirtle.setValue(7, forKey: "pokedexId")
+        squirtle.setValue("Squirtle", forKey: "name")
+        
+        bulbasaur.setValue(user, forKey: "owned")
+        squirtle.setValue(user, forKey: "owned")
+        charmander.setValue(user, forKey: "owned")
+        
+        // create fetch request
+        let fetchRequest = NSFetchRequest(entityName: "Pokemon")
+        
+        // add sort descriptor
+        let sortDescriptor = NSSortDescriptor(key: "pokedexId", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        
+        // do fetch request
+        do {
+            let result = try managedContext.executeFetchRequest(fetchRequest)
+            var ownedIds = [Int]()
+            
+            for managedObject in result {
+                if managedObject.valueForKey("owned") != nil {
+                    if let ownedId = managedObject.valueForKey("pokedexId") as? Int {
+                        ownedIds.append(ownedId)
+                    }
+                }
+            }
+            
+            /*pokemons = pokemons.filter({
+                ownedIds.contains(($0.valueForKey("pokedexId") as! Int))
+            })*/
+        } catch {
+            let fetchError = error as NSError
+            print(fetchError)
+        }
+    }
 }

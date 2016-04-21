@@ -544,6 +544,9 @@
                                                 <state key="normal" title="Light Attack">
                                                     <color key="titleColor" red="0.98320600270000003" green="0.98733520509999995" blue="0.98344896979999996" alpha="1" colorSpace="calibratedRGB"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="lightAttack:" destination="Dsj-jx-wun" eventType="touchUpInside" id="OW1-Um-iMT"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mDZ-Ht-awQ">
                                                 <rect key="frame" x="300" y="0.0" width="284" height="42"/>
@@ -551,6 +554,9 @@
                                                 <state key="normal" title="Heavy Attack">
                                                     <color key="titleColor" red="0.98320600270000003" green="0.98733520509999995" blue="0.98344896979999996" alpha="1" colorSpace="calibratedRGB"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="heavyAttack:" destination="Dsj-jx-wun" eventType="touchUpInside" id="tRa-jn-ueP"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                     </stackView>

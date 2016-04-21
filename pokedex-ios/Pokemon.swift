@@ -12,10 +12,6 @@ import Alamofire
 
 class Pokemon : NSManagedObject {
     
-    func setId(id: Int) {
-        self.pokedexId = id
-    }
-    
     func downloadPokemonDetails(completed: DownloadComplete) {
         let url = NSURL(string: "\(URL_BASE)\(URL_POKEMON)\(pokedexId!.integerValue)")!
         let speciesUrl = NSURL(string: "\(URL_BASE)\(URL_SPECIES)\(pokedexId!.integerValue)")!
