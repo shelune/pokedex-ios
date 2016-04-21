@@ -16,8 +16,11 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
     var locationManager: CLLocationManager!
     var foundBeacon = false
     var opponentId = 0
+    var activeId = 0
+    var pokemons = [NSManagedObject]()
     
     @IBOutlet weak var detectionLabel: UILabel!
+    @IBOutlet weak var activePokemonBtn: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +29,8 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
         locationManager.requestWhenInUseAuthorization()
         
         initUser()
+        
+        setActive()
     }
     
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
@@ -62,13 +67,32 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
+    func setActive() {
+        let cdInstance = CoreDataInit.instance
+        
+        let allPoke = cdInstance.searchEntity("Pokemon")
+        var activeId: Int!
+        
+        for poke in allPoke {
+            if let poke = poke as? NSManagedObject {
+                if poke.valueForKey("chosen") != nil {
+                    if let pokemonId = poke.valueForKey("pokedexId") as? Int {
+                        activeId = pokemonId
+                        self.activeId = pokemonId
+                    }
+                }
+            }
+        }
+        
+        let activeImg = UIImage(named: "\(activeId)")
+        activePokemonBtn.setBackgroundImage(activeImg, forState: .Normal)
+    }
+    
     @IBAction func onBattleTriggered(sender: AnyObject) {
         opponentId = Int(arc4random_uniform(UInt32(719)))
         
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        let managedContext = appDelegate.managedObjectContext
-        let entityPokemon = NSEntityDescription.entityForName("Pokemon", inManagedObjectContext: managedContext)
-        let poke = NSManagedObject(entity: entityPokemon!, insertIntoManagedObjectContext: managedContext)
+        let cdInstance = CoreDataInit.instance
+        let poke = cdInstance.entityPokemon()
         
         poke.setValue(opponentId, forKey: "pokedexId")
         
@@ -84,73 +108,42 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
             }
         }
         
-        /*
         if segue.identifier == "ViewController" {
-            if let collectionVC = segue.destinationViewController as? ViewController {
-                
+            if let dexVC = segue.destinationViewController as? ViewController {
+                if let activeId = sender as? Int {
+                    dexVC.activeId = activeId
+                }
             }
         }
-         */
     }
     @IBAction func activePokemonPressed(sender: AnyObject) {
-        performSegueWithIdentifier("ViewController", sender: nil)
+        performSegueWithIdentifier("ViewController", sender: activeId)
     }
     
     func initUser() {
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        let managedContext = appDelegate.managedObjectContext
-        let entityUser = NSEntityDescription.entityForName("User", inManagedObjectContext: managedContext)
-        let entityPokemon = NSEntityDescription.entityForName("Pokemon", inManagedObjectContext: managedContext)
+        let instance = CoreDataInit.instance
         
         // declare user
-        let user = NSManagedObject(entity: entityUser!, insertIntoManagedObjectContext: managedContext)
+        let user = instance.entityUser()
         
         // declare starter
-        let bulbasaur = NSManagedObject(entity: entityPokemon!, insertIntoManagedObjectContext: managedContext)
-        bulbasaur.setValue(113, forKey: "pokedexId")
+        let bulbasaur = instance.entityPokemon()
+        bulbasaur.setValue(1, forKey: "pokedexId")
         bulbasaur.setValue("Bulbasaur", forKey: "name")
-        user.setValue(bulbasaur, forKey: "active")
-        //activePokemonImg.image = UIImage(named: "\(bulbasaur.valueForKey("pokedexId")!.integerValue)")
         
-        // declare caught?
-        let charmander = NSManagedObject(entity: entityPokemon!, insertIntoManagedObjectContext: managedContext)
+        // declare caught
+        let charmander = instance.entityPokemon()
         charmander.setValue(4, forKey: "pokedexId")
         charmander.setValue("Charmander", forKey: "name")
         
-        let squirtle = NSManagedObject(entity: entityPokemon!, insertIntoManagedObjectContext: managedContext)
+        let squirtle = instance.entityPokemon()
         squirtle.setValue(7, forKey: "pokedexId")
         squirtle.setValue("Squirtle", forKey: "name")
         
+        // set active & caught relationship
         bulbasaur.setValue(user, forKey: "owned")
         squirtle.setValue(user, forKey: "owned")
         charmander.setValue(user, forKey: "owned")
-        
-        // create fetch request
-        let fetchRequest = NSFetchRequest(entityName: "Pokemon")
-        
-        // add sort descriptor
-        let sortDescriptor = NSSortDescriptor(key: "pokedexId", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptor]
-        
-        // do fetch request
-        do {
-            let result = try managedContext.executeFetchRequest(fetchRequest)
-            var ownedIds = [Int]()
-            
-            for managedObject in result {
-                if managedObject.valueForKey("owned") != nil {
-                    if let ownedId = managedObject.valueForKey("pokedexId") as? Int {
-                        ownedIds.append(ownedId)
-                    }
-                }
-            }
-            
-            /*pokemons = pokemons.filter({
-                ownedIds.contains(($0.valueForKey("pokedexId") as! Int))
-            })*/
-        } catch {
-            let fetchError = error as NSError
-            print(fetchError)
-        }
+        user.setValue(bulbasaur, forKey: "active")
     }
 }

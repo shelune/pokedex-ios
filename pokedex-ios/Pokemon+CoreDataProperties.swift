@@ -2,7 +2,7 @@
 //  Pokemon+CoreDataProperties.swift
 //  pokedex-ios
 //
-//  Created by iosdev on 15.4.2016.
+//  Created by iosdev on 21.4.2016.
 //  Copyright © 2016 iosdev. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -28,5 +28,6 @@ extension Pokemon {
     @NSManaged var typeSecond: String?
     @NSManaged var weight: NSNumber?
     @NSManaged var owned: User?
+    @NSManaged var chosen: User?
 
 }

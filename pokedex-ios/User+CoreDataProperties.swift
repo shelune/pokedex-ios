@@ -2,7 +2,7 @@
 //  User+CoreDataProperties.swift
 //  pokedex-ios
 //
-//  Created by iosdev on 8.4.2016.
+//  Created by iosdev on 21.4.2016.
 //  Copyright © 2016 iosdev. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -14,7 +14,8 @@ import CoreData
 
 extension User {
 
-    @NSManaged var active: NSSet?
+    @NSManaged var caughtCount: NSNumber?
+    @NSManaged var active: Pokemon?
     @NSManaged var caught: NSSet?
 
 }

@@ -23,6 +23,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     var filteredPokemons = [NSManagedObject]()
     var musicPlayer: AVAudioPlayer!
     var inSearchMode = false
+    var activeId: Int!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,6 +41,10 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         // parsing data from csv
         parsePokemonCSV()
         
+        // filter out non-captured pokemons & set active pokemon
+        filterOwned()
+        setActive()
+        
         // music
         initAudio()
     }
@@ -54,53 +59,6 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         } catch _ as NSError {
             print("Error with Audio?")
         }
-    }
-    
-    func initUser() {
-        let instance = CoreDataInit.instance
-        
-        // declare user
-        let user = instance.entityUser()
-        
-        // declare starter
-        let bulbasaur = instance.entityPokemon()
-        bulbasaur.setValue(1, forKey: "pokedexId")
-        bulbasaur.setValue("Bulbasaur", forKey: "name")
-        user.setValue(bulbasaur, forKey: "active")
-        activePokemonImg.image = UIImage(named: "\(bulbasaur.valueForKey("pokedexId")!.integerValue)")
-        
-        // declare caught?
-        let charmander = instance.entityPokemon()
-        charmander.setValue(4, forKey: "pokedexId")
-        charmander.setValue("Charmander", forKey: "name")
-        
-        let squirtle = instance.entityPokemon()
-        squirtle.setValue(7, forKey: "pokedexId")
-        squirtle.setValue("Squirtle", forKey: "name")
-        
-        bulbasaur.setValue(user, forKey: "owned")
-        squirtle.setValue(user, forKey: "owned")
-        charmander.setValue(user, forKey: "owned")
-        
-        // fetch request
-        let allPoke = instance.searchEntity("Pokemon")
-        var ownedIds = [Int]()
-        
-        for poke in allPoke {
-            if let poke = poke as? NSManagedObject {
-                if poke.valueForKey("owned") != nil {
-                    if let pokemonId = poke.valueForKey("pokedexId") as? Int {
-                        ownedIds.append(pokemonId)
-                    }
-                }
-            }
-        }
-        
-        print(ownedIds)
-        
-        pokemons = pokemons.filter({
-            ownedIds.contains(($0.valueForKey("pokedexId") as! Int))
-        })
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
@@ -165,6 +123,34 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         } catch {
             print("Error with parsing CSV?")
         }
+    }
+    
+    // filter owned Pokemon 
+    func filterOwned() {
+        let cdInstance = CoreDataInit.instance
+        
+        // create fetch request
+        let allPoke = cdInstance.searchEntity("Pokemon")
+        var ownedIds = [Int]()
+        
+        for poke in allPoke {
+            if let poke = poke as? NSManagedObject {
+                if poke.valueForKey("owned") != nil {
+                    if let pokemonId = poke.valueForKey("pokedexId") as? Int {
+                        ownedIds.append(pokemonId)
+                    }
+                }
+            }
+        }
+        
+        pokemons = pokemons.filter({
+            ownedIds.contains(($0.valueForKey("pokedexId") as! Int))
+        })
+    }
+    
+    // set active pokemon (again)
+    func setActive() {
+        activePokemonImg.image = UIImage(named: "\(activeId)")
     }
     
     // filter search phrase
