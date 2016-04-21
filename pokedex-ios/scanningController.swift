@@ -33,6 +33,11 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
         setActive()
     }
     
+    override func viewWillAppear(animated: Bool) {
+        setActive()
+        print("View re appear now")
+    }
+    
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         if status == CLAuthorizationStatus.AuthorizedWhenInUse {
             if CLLocationManager.isMonitoringAvailableForClass(CLBeaconRegion.self) {
@@ -89,7 +94,7 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
     }
     
     @IBAction func onBattleTriggered(sender: AnyObject) {
-        opponentId = Int(arc4random_uniform(UInt32(719)))
+        opponentId = Int(arc4random_uniform(UInt32(718))) + 1
         
         let cdInstance = CoreDataInit.instance
         let poke = cdInstance.entityPokemon()

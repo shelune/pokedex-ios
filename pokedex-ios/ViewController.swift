@@ -47,6 +47,8 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         
         // music
         initAudio()
+        
+        print("Collection Dex View loaded")
     }
     
     func initAudio() {
@@ -129,19 +131,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     func filterOwned() {
         let cdInstance = CoreDataInit.instance
         
-        // create fetch request
-        let allPoke = cdInstance.searchEntity("Pokemon")
-        var ownedIds = [Int]()
-        
-        for poke in allPoke {
-            if let poke = poke as? NSManagedObject {
-                if poke.valueForKey("owned") != nil {
-                    if let pokemonId = poke.valueForKey("pokedexId") as? Int {
-                        ownedIds.append(pokemonId)
-                    }
-                }
-            }
-        }
+        var ownedIds = cdInstance.searchForOwned()
         
         pokemons = pokemons.filter({
             ownedIds.contains(($0.valueForKey("pokedexId") as! Int))

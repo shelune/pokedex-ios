@@ -45,4 +45,56 @@ class CoreDataInit {
         return []
     }
     
+    func searchForActive() -> Int {
+        let allPoke = self.searchEntity("Pokemon")
+        var activeId: Int!
+        
+        for poke in allPoke {
+            if let poke = poke as? NSManagedObject {
+                if poke.valueForKey("chosen") != nil {
+                    if let pokemonId = poke.valueForKey("pokedexId") as? Int {
+                        return pokemonId
+                    }
+                }
+            }
+        }
+        
+        return 0
+    }
+    
+    func searchForOwned() -> [Int] {
+        let allPoke = self.searchEntity("Pokemon")
+        var ownedIds = [Int]()
+        
+        for poke in allPoke {
+            if let poke = poke as? NSManagedObject {
+                if poke.valueForKey("owned") != nil {
+                    if let pokemonId = poke.valueForKey("pokedexId") as? Int {
+                        ownedIds.append(pokemonId)
+                    }
+                }
+            }
+        }
+        
+        return ownedIds
+    }
+    
+    func searchForPoke(searchId: Int) -> NSManagedObject {
+        let allPoke = self.searchEntity("Pokemon")
+        let result = self.entityPokemon()
+        
+        for poke in allPoke {
+            if let poke = poke as? NSManagedObject {
+                if let pokemonId = poke.valueForKey("pokedexId") as? Int {
+                    if pokemonId == searchId {
+                        result.setValue(searchId, forKey: "pokedexId")
+                        print(result)
+                    }
+                }
+            }
+        }
+        
+        return result
+    }
+    
 }
