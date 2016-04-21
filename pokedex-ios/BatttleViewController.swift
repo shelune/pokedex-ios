@@ -172,22 +172,22 @@ class BatttleViewController: UIViewController {
     }
     
     func activeLightAttack() {
-        opponentHP = opponentHP - (((( 2 * 10 / 5 + 2) * activeAttack * 40 / opponentDefence) / 50 ) * 1 * randomizer() / 100 )
+        opponentHP = opponentHP - ((((( 2 * 10 / 5 + 2) * activeAttack * 40 / opponentDefence) / 50 ) * 1 * randomizer() / 100 ) + 1 )
         updateHealth()
     }
     
     func activeHeavyAttack() {
-        opponentHP = opponentHP - (((( 2 * 10 / 5 + 2) * activeAttack * 60 / opponentDefence) / 50 ) * 1 * randomizer() / 100 )
+        opponentHP = opponentHP - ((((( 2 * 10 / 5 + 2) * activeAttack * 60 / opponentDefence) / 50 ) * 1 * randomizer() / 100 ) + 1 )
         updateHealth()
     }
     
     func opponentLightAttack() {
-        activeHP = activeHP - (((( 2 * 10 / 5 + 2) * opponentAttack * 40 / activeDefence) / 50 ) * 1 * randomizer() / 100 )
+        activeHP = activeHP - ((((( 2 * 10 / 5 + 2) * opponentAttack * 40 / activeDefence) / 50 ) * 1 * randomizer() / 100 ) + 1 )
         updateHealth()
     }
     
     func opponentHeavyAttack() {
-        activeHP = activeHP - (((( 2 * 10 / 5 + 2) * opponentAttack * 60 / activeDefence) / 50 ) * 1 * randomizer() / 100 )
+        activeHP = activeHP - ((((( 2 * 10 / 5 + 2) * opponentAttack * 60 / activeDefence) / 50 ) * 1 * randomizer() / 100 ) + 1 )
         updateHealth()
     }
 }
