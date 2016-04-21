@@ -46,12 +46,6 @@ class BatttleViewController: UIViewController {
         let user = instance.entityUser()
         let userFind = instance.searchEntity("User")
         
-        // set opponent stats
-        print("opponent: \(opponentPokemon.valueForKey("chosen"))")
-        opponentPokemon.downloadPokemonDetails { () -> () in
-            self.updateStats(self.opponentPokemon)
-        }
-        
         // set active stats
         if let userFind = userFind as? [NSManagedObject] {
             print(userFind[0].valueForKey("active"))
@@ -66,7 +60,11 @@ class BatttleViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        // set opponent stats
+        print("opponent: \(opponentPokemon.valueForKey("chosen"))")
+        opponentPokemon.downloadPokemonDetails { () -> () in
+            self.updateStats(self.opponentPokemon)
+        }
         initAudio()
     }
     
@@ -143,7 +141,22 @@ class BatttleViewController: UIViewController {
             sender.alpha = 1.0
         }
     }
-
+    
+    @IBAction func forfeitBtnPressed(sender: UIButton) {
+        // create alert
+        let alert = UIAlertController(title: "UIAlertController", message: "Would you like to forfeit this battle?", preferredStyle: UIAlertControllerStyle.Alert)
+        
+        // add actions
+        alert.addAction(UIAlertAction(title: "Continue", style: UIAlertActionStyle.Default, handler: nil))
+        alert.addAction(UIAlertAction(title: "Forfeit", style: UIAlertActionStyle.Cancel, handler: { action in self.forfeitConfirmed() }))
+        
+        // show alert
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func forfeitConfirmed() {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
     
     // BATTLE SECTION
     

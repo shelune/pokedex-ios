@@ -31,15 +31,14 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
         locationManager.requestWhenInUseAuthorization()
         
         initUser()
-        initAudio()
         
-        // set active pokemon at the footer
         setActive()
     }
     
     override func viewWillAppear(animated: Bool) {
         setActive()
-        print("View re appear now")
+        
+        initAudio()
     }
     
     func initAudio() {
@@ -88,6 +87,7 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
+    // set active pokemon at the footer
     func setActive() {
         let cdInstance = CoreDataInit.instance
         
@@ -150,22 +150,36 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
         let user = instance.entityUser()
         
         // declare starter
-        let bulbasaur = instance.entityPokemon()
-        bulbasaur.setValue(718, forKey: "pokedexId")
+        let starter = instance.entityPokemon()
+        starter.setValue(718, forKey: "pokedexId")
         
         // declare caught
-        let charmander = instance.entityPokemon()
-        charmander.setValue(4, forKey: "pokedexId")
+        let caught1 = instance.entityPokemon()
+        caught1.setValue(4, forKey: "pokedexId")
         
-        let squirtle = instance.entityPokemon()
-        squirtle.setValue(7, forKey: "pokedexId")
+        let caught2 = instance.entityPokemon()
+        caught2.setValue(7, forKey: "pokedexId")
+        
+        let caught3 = instance.entityPokemon()
+        caught3.setValue(122, forKey: "pokedexId")
+
+        
+        let caught4 = instance.entityPokemon()
+        caught4.setValue(384, forKey: "pokedexId")
+
+        
+        let caught5 = instance.entityPokemon()
+        caught5.setValue(151, forKey: "pokedexId")
         
         // set active & caught relationship
-        bulbasaur.setValue(user, forKey: "owned")
-        squirtle.setValue(user, forKey: "owned")
-        charmander.setValue(user, forKey: "owned")
-        bulbasaur.setValue(user, forKey: "chosen")
-        user.setValue(bulbasaur, forKey: "active")
+        starter.setValue(user, forKey: "owned")
+        caught2.setValue(user, forKey: "owned")
+        caught1.setValue(user, forKey: "owned")
+        caught3.setValue(user, forKey: "owned")
+        caught4.setValue(user, forKey: "owned")
+        caught5.setValue(user, forKey: "owned")
+
+        user.setValue(starter, forKey: "active")
     }
     
     @IBAction func soundBtnPressed(sender: UIButton) {

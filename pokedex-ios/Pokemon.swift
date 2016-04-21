@@ -15,7 +15,7 @@ class Pokemon : NSManagedObject {
     func downloadPokemonDetails(completed: DownloadComplete) {
         let url = NSURL(string: "\(URL_BASE)\(URL_POKEMON)\(pokedexId!.integerValue)")!
         let speciesUrl = NSURL(string: "\(URL_BASE)\(URL_SPECIES)\(pokedexId!.integerValue)")!
-        let evolutionUrl = NSURL(string: "\(URL_BASE_ALT)\(URL_POKEMON)\(pokedexId!.integerValue)")!
+        let alternativeUrl = NSURL(string: "\(URL_BASE_ALT)\(URL_POKEMON)\(pokedexId!.integerValue)")!
         
         print(url)
         
@@ -23,39 +23,14 @@ class Pokemon : NSManagedObject {
         Alamofire.request(.GET, url).responseJSON {
             response in
             if let result = response.result.value as? Dictionary<String, AnyObject> {
-                
-                // fetch name
-                if let name = result["name"] as? String {
-                    self.name = name.capitalizedString
-                }
-                
                 // fetch weight
-                if let weight = result["weight"]?.floatValue {
+                if let weight = result["weight"] as? Float32 {
                     self.weight = weight / 10.0
                 }
                 
                 // fetch height
-                if let height = result["height"]?.floatValue {
+                if let height = result["height"] as? Float32 {
                     self.height = height / 10.0
-                }
-                
-                // fetch stats
-                if let stats = result["stats"] {
-                    if let speed = stats[0]["base_stat"] as? Int {
-                        self.speed = "\(speed)"
-                    }
-                    
-                    if let attack = stats[4]["base_stat"] as? Int {
-                        self.attack = "\(attack)"
-                    }
-                    
-                    if let defense = stats[3]["base_stat"] as? Int {
-                        self.defense = "\(defense)"
-                    }
-                    
-                    if let hp = stats[5]["base_stat"] as? Int {
-                        self.hp = "\(hp)"
-                    }
                 }
                 
                 // fetch abilities
@@ -74,7 +49,6 @@ class Pokemon : NSManagedObject {
                 }
                 
                 // fetch types
-                
                 if let types = result["types"] as? [AnyObject] {
                     var firstType = ""
                     var secondType = ""
@@ -86,18 +60,41 @@ class Pokemon : NSManagedObject {
                     self.typeSecond = secondType
                     
                 }
-                completed()
             }
+            completed()
         }
         
         // fetch evolution data
-        Alamofire.request(.GET, evolutionUrl).responseJSON {
+        Alamofire.request(.GET, alternativeUrl).responseJSON {
             response in
             if let result = response.result.value {
+                // fetch name
+                
+                if let name = result["name"] as? String {
+                    self.name = name.capitalizedString
+                }
+                
+                // fetch stats
+                if let speed = result["speed"] as? Int {
+                    self.speed = "\(speed)"
+                }
+                
+                if let attack = result["attack"] as? Int {
+                    self.attack = "\(attack)"
+                }
+                
+                if let defense = result["defense"] as? Int {
+                    self.defense = "\(defense)"
+                }
+                
+                if let hp = result["hp"] as? Int {
+                    self.hp = "\(hp)"
+                }
+
                 // check for mega evolution
                 if let evolutions = result["evolutions"] as? Array<AnyObject> {
                     if evolutions.count > 0 {
-                        if let mega = evolutions[0]["detail"] as? String {
+                        if let _ = evolutions[0]["detail"] as? String {
                             self.nextEvoId = 99999
                         } else {
                             if let nextEvo = evolutions[0]["resource_uri"] as? String {
