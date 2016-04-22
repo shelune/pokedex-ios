@@ -154,30 +154,17 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
         starter.setValue(718, forKey: "pokedexId")
         
         // declare caught
-        let caught1 = instance.entityPokemon()
-        caught1.setValue(4, forKey: "pokedexId")
-        
-        let caught2 = instance.entityPokemon()
-        caught2.setValue(7, forKey: "pokedexId")
-        
-        let caught3 = instance.entityPokemon()
-        caught3.setValue(122, forKey: "pokedexId")
-
-        
-        let caught4 = instance.entityPokemon()
-        caught4.setValue(384, forKey: "pokedexId")
-
-        
-        let caught5 = instance.entityPokemon()
-        caught5.setValue(151, forKey: "pokedexId")
+        if let user = user as? User {
+            user.capture(128)
+            user.capture(111)
+            user.capture(2)
+            user.capture(5)
+            user.capture(243)
+            user.capture(244)
+        }
         
         // set active & caught relationship
         starter.setValue(user, forKey: "owned")
-        caught2.setValue(user, forKey: "owned")
-        caught1.setValue(user, forKey: "owned")
-        caught3.setValue(user, forKey: "owned")
-        caught4.setValue(user, forKey: "owned")
-        caught5.setValue(user, forKey: "owned")
 
         user.setValue(starter, forKey: "active")
     }

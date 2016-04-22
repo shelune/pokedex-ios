@@ -79,12 +79,13 @@ class Pokemon : NSManagedObject {
                     self.speed = "\(speed)"
                 }
                 
-                if let attack = result["attack"] as? Int {
-                    self.attack = "\(attack)"
+                if let attack = result["attack"] as? Int, spAtk = result["sp_atk"] as? Int {
+                    self.attack = "\(max(attack, spAtk))"
                 }
                 
-                if let defense = result["defense"] as? Int {
-                    self.defense = "\(defense)"
+                
+                if let defense = result["defense"] as? Int, spDef = result["sp_def"] as? Int {
+                    self.defense = "\(max(defense, spDef))"
                 }
                 
                 if let hp = result["hp"] as? Int {
