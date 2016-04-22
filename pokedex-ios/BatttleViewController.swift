@@ -144,7 +144,7 @@ class BatttleViewController: UIViewController {
     
     @IBAction func forfeitBtnPressed(sender: UIButton) {
         // create alert
-        let alert = UIAlertController(title: "UIAlertController", message: "Would you like to forfeit this battle?", preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: "Battle Is Still On!", message: "Would you like to forfeit this battle?", preferredStyle: UIAlertControllerStyle.Alert)
         
         // add actions
         alert.addAction(UIAlertAction(title: "Continue", style: UIAlertActionStyle.Default, handler: nil))
