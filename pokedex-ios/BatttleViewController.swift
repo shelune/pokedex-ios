@@ -71,8 +71,9 @@ class BatttleViewController: UIViewController {
         print("opponent: \(opponentPokemon.valueForKey("chosen"))")
         opponentPokemon.downloadPokemonDetails { () -> () in
             self.updateStats(self.opponentPokemon)
-            lightAtkBtn.userInteractionEnabled = true
-            heavyAtkBtn.userInteractionEnabled = true
+            
+            self.lightAtkBtn.userInteractionEnabled = true
+            self.heavyAtkBtn.userInteractionEnabled = true
         }
         initAudio()
     }
