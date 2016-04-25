@@ -127,6 +127,13 @@ class BatttleViewController: UIViewController {
     func hitChance() -> Int {
         return Int(arc4random_uniform(UInt32(100)))
     }
+    func attackRandomizer() {
+        if Int(arc4random_uniform(UInt32(100))) < 50 {
+            opponentHeavyAttack()
+        } else {
+            opponentLightAttack()
+        }
+    }
     
     // MARK: Attacks
     @IBAction func lightAttack(sender: UIButton) {
@@ -136,7 +143,7 @@ class BatttleViewController: UIViewController {
             print("You lose!")
         } else {
             activeLightAttack()
-            opponentLightAttack()
+            attackRandomizer()
         }
     }
     
@@ -152,7 +159,7 @@ class BatttleViewController: UIViewController {
                 print("You missed!")
             }
             if hitChance() <= 75 {
-                opponentHeavyAttack()
+                attackRandomizer()
             } else {
                 print("Opponent missed!")
             }
