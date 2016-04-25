@@ -185,9 +185,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     }
     
     // go back to scanning view
-    @IBAction func backBtnPressed(sender: AnyObject) {
-        dismissViewControllerAnimated(true, completion: nil)
-    }
+    
     
     // prepare for detail view
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -199,6 +197,12 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
                 }
             }
         }
+        
+
+    }
+    
+    @IBAction func backBtnPressed(sender: UIButton) {
+        self.performSegueWithIdentifier("unwindToScanner", sender: activeId)
     }
 }
 

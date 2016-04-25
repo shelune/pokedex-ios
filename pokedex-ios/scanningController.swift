@@ -178,4 +178,8 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
             sender.alpha = 1.0
         }
     }
+    
+    @IBAction func unwindToScanner(segue: UIStoryboardSegue) {
+        
+    }
 }
