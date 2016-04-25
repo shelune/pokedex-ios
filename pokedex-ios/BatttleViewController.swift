@@ -42,6 +42,7 @@ class BatttleViewController: UIViewController {
     
     @IBOutlet weak var heavyAtkBtn: UIButton!
     @IBOutlet weak var lightAtkBtn: UIButton!
+    
     override func viewWillAppear(animated: Bool) {
         
         let instance = CoreDataInit.instance
@@ -70,6 +71,8 @@ class BatttleViewController: UIViewController {
         print("opponent: \(opponentPokemon.valueForKey("chosen"))")
         opponentPokemon.downloadPokemonDetails { () -> () in
             self.updateStats(self.opponentPokemon)
+            lightAtkBtn.userInteractionEnabled = true
+            heavyAtkBtn.userInteractionEnabled = true
         }
         initAudio()
     }
