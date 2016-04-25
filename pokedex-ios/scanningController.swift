@@ -9,10 +9,12 @@
 import CoreLocation
 import UIKit
 import CoreData
+import AVFoundation
 
 class scanningController: UIViewController, CLLocationManagerDelegate {
     
     // MARK: Properties
+    var musicPlayer: AVAudioPlayer!
     var locationManager: CLLocationManager!
     var foundBeacon = false
     var opponentId = 0
@@ -35,7 +37,20 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
     
     override func viewWillAppear(animated: Bool) {
         setActive()
-        print("View re appear now")
+        
+        initAudio()
+    }
+    
+    func initAudio() {
+        let path = NSBundle.mainBundle().pathForResource("main-theme", ofType: "mp3")
+        do {
+            musicPlayer = try AVAudioPlayer(contentsOfURL: NSURL(string: path!)!)
+            musicPlayer.prepareToPlay()
+            musicPlayer.numberOfLoops = -1
+            musicPlayer.play()
+        } catch _ as NSError {
+            print("Error with Audio?")
+        }
     }
     
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
@@ -72,6 +87,7 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
+    // set active pokemon at the footer
     func setActive() {
         let cdInstance = CoreDataInit.instance
         
@@ -111,16 +127,20 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
                     battleVC.opponentPokemon = poke
                 }
             }
+            musicPlayer.stop()
         }
         
         if segue.identifier == "ViewController" {
             if let dexVC = segue.destinationViewController as? ViewController {
                 if let activeId = sender as? Int {
                     dexVC.activeId = activeId
+                    dexVC.musicPlayer = musicPlayer
                 }
             }
+            musicPlayer.stop()
         }
     }
+    
     @IBAction func activePokemonPressed(sender: AnyObject) {
         performSegueWithIdentifier("ViewController", sender: activeId)
     }
@@ -132,20 +152,30 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
         let user = instance.entityUser()
         
         // declare starter
-        let bulbasaur = instance.entityPokemon()
-        bulbasaur.setValue(718, forKey: "pokedexId")
+        let starter = instance.entityPokemon()
+        starter.setValue(718, forKey: "pokedexId")
         
         // declare caught
-        let charmander = instance.entityPokemon()
-        charmander.setValue(4, forKey: "pokedexId")
-        
-        let squirtle = instance.entityPokemon()
-        squirtle.setValue(7, forKey: "pokedexId")
-        
+        if let user = user as? User {
+            user.capture(128)
+            user.capture(111)
+            user.capture(2)
+            user.capture(5)
+            user.capture(243)
+            user.capture(244)
+        }        
         // set active & caught relationship
-        bulbasaur.setValue(user, forKey: "owned")
-        squirtle.setValue(user, forKey: "owned")
-        charmander.setValue(user, forKey: "owned")
-        user.setValue(bulbasaur, forKey: "active")
+
+        user.setValue(starter, forKey: "active")
+    }
+    
+    @IBAction func soundBtnPressed(sender: UIButton) {
+        if musicPlayer.playing {
+            musicPlayer.stop()
+            sender.alpha = 0.2
+        } else {
+            musicPlayer.play()
+            sender.alpha = 1.0
+        }
     }
 }

@@ -12,5 +12,10 @@ import CoreData
 
 class User: NSManagedObject {
 
-    
+    func capture(pokedexId: Int) {
+        let cdInstance = CoreDataInit.instance
+        let poke = cdInstance.entityPokemon()
+        poke.setValue(pokedexId, forKey: "pokedexId")
+        poke.setValue(self, forKey: "owned")
+    }
 }

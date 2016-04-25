@@ -44,7 +44,9 @@ class PokemonDetailVC: UIViewController {
         mainImg.image = UIImage(named: "\(pokemon.valueForKey("pokedexId")!.integerValue)")
         pokeIdLbl.text = "No. \(pokemon.valueForKey("pokedexId")!.integerValue)"
         currentEvoImg.image = UIImage(named: "\(pokemon.valueForKey("pokedexId")!.integerValue)")
-        
+    }
+    
+    override func viewWillAppear(animated: Bool) {
         pokemon.downloadPokemonDetails { () -> () in
             self.updateUI()
         }
@@ -101,14 +103,15 @@ class PokemonDetailVC: UIViewController {
         
         if let typeFirst = self.pokemon.valueForKey("typeFirst") {
             mainTypeImg.image = UIImage(named: "type-\(typeFirst as! String)")
+            mainTypeImg.alpha = 1.0
         }
         
         if let typeSecond = self.pokemon.valueForKey("typeSecond") as? String {
-            if typeSecond == "" || typeSecond.isEmpty {
-                secondaryTypeImg.alpha = 0.0
-            } else {
+            if typeSecond != "" && !typeSecond.isEmpty {
                 secondaryTypeImg.image = UIImage(named: "type-\(typeSecond)")
+                secondaryTypeImg.alpha = 1.0
             }
+            
         }
         
         if let nextEvo = self.pokemon.valueForKey("nextEvoId") as? Int {
@@ -117,16 +120,6 @@ class PokemonDetailVC: UIViewController {
             } else {
                 nextEvoImg.image = UIImage(named: "\(nextEvo)")
             }
-        }
-    }
-    
-    @IBAction func soundBtnPressed(sender: UIButton) {
-        if musicPlayer.playing {
-            musicPlayer.stop()
-            sender.alpha = 0.2
-        } else {
-            musicPlayer.play()
-            sender.alpha = 1.0
         }
     }
 }
