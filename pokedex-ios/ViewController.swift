@@ -51,7 +51,9 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     }
     
     func initAudio() {
-        musicPlayer.stop()
+        if musicPlayer != nil {
+            musicPlayer.stop()
+        }
         let path = NSBundle.mainBundle().pathForResource("collection-theme", ofType: "mp3")
         do {
             musicPlayer = try AVAudioPlayer(contentsOfURL: NSURL(string: path!)!)

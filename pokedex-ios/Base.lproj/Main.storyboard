@@ -638,11 +638,14 @@
                         <outlet property="activeHPValue" destination="GHx-8f-SEp" id="QYu-BG-VV6"/>
                         <outlet property="activeImg" destination="Ddf-c5-Vhq" id="7E8-ha-cfU"/>
                         <outlet property="activeName" destination="LJF-9n-1Qe" id="UWR-py-B2T"/>
+                        <outlet property="heavyAtkBtn" destination="mDZ-Ht-awQ" id="p9M-rq-9zd"/>
+                        <outlet property="lightAtkBtn" destination="b5e-Js-m4k" id="PXd-bD-Fy9"/>
                         <outlet property="opponentAtkValue" destination="Kl1-hA-bP5" id="pqW-Rb-PXp"/>
                         <outlet property="opponentDefValue" destination="tj5-P5-hv5" id="IZW-6k-JX3"/>
                         <outlet property="opponentHPValue" destination="Y2d-3G-kAo" id="cTw-yJ-Or0"/>
                         <outlet property="opponentImg" destination="N20-Lo-hj7" id="dDr-ku-nna"/>
                         <outlet property="opponentName" destination="Sh2-Ya-L2M" id="BM1-5z-eaK"/>
+                        <segue destination="BYZ-38-t0r" kind="show" identifier="ViewController" id="8He-f0-Vwh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tc6-iX-zgy" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -989,4 +992,7 @@
         <image name="type-default" width="59" height="13"/>
         <image name="volume-w" width="512" height="512"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="8He-f0-Vwh"/>
+    </inferredMetricsTieBreakers>
 </document>

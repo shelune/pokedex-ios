@@ -137,8 +137,10 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
                     dexVC.musicPlayer = musicPlayer
                 }
             }
+            musicPlayer.stop()
         }
     }
+    
     @IBAction func activePokemonPressed(sender: AnyObject) {
         performSegueWithIdentifier("ViewController", sender: activeId)
     }
