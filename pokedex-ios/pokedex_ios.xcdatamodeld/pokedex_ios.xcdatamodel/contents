@@ -5,8 +5,10 @@
         <attribute name="attack" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="defense" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="descriptionText" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="effectiveVersus" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="height" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="hp" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="ineffectiveVersus" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="nextEvoId" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="pokedexId" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -23,7 +25,7 @@
         <relationship name="caught" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Pokemon" inverseName="owned" inverseEntity="Pokemon" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Pokemon" positionX="-63" positionY="-18" width="128" height="270"/>
+        <element name="Pokemon" positionX="-63" positionY="-18" width="128" height="300"/>
         <element name="User" positionX="-45" positionY="18" width="128" height="90"/>
     </elements>
 </model>

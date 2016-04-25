@@ -163,6 +163,7 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
             user.capture(5)
             user.capture(243)
             user.capture(244)
+            user.capture(718)
         }        
         // set active & caught relationship
 
