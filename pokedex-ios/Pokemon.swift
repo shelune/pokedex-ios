@@ -83,7 +83,6 @@ class Pokemon : NSManagedObject {
                     self.attack = "\(max(attack, spAtk))"
                 }
                 
-                
                 if let defense = result["defense"] as? Int, spDef = result["sp_def"] as? Int {
                     self.defense = "\(max(defense, spDef))"
                 }

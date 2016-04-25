@@ -40,6 +40,9 @@ class BatttleViewController: UIViewController {
     @IBOutlet weak var activeHPValue: UILabel!
     @IBOutlet weak var activeDefValue: UILabel!
     
+    @IBOutlet weak var heavyAtkBtn: UIButton!
+    @IBOutlet weak var lightAtkBtn: UIButton!
+    
     override func viewWillAppear(animated: Bool) {
         
         let instance = CoreDataInit.instance
@@ -50,9 +53,13 @@ class BatttleViewController: UIViewController {
         if let userFind = userFind as? [NSManagedObject] {
             print(userFind[0].valueForKey("active"))
             if let poke = user.valueForKey("active") as? Pokemon {
+                if let pokedexId = poke.valueForKey("pokedexId") as? Int {
+                    activeId = pokedexId
+                }
                 poke.downloadPokemonDetails { () -> () in
                     self.activePokemon = poke
                     self.updateStats(self.activePokemon)
+                    
                 }
             }
         }
@@ -64,6 +71,9 @@ class BatttleViewController: UIViewController {
         print("opponent: \(opponentPokemon.valueForKey("chosen"))")
         opponentPokemon.downloadPokemonDetails { () -> () in
             self.updateStats(self.opponentPokemon)
+            
+            self.lightAtkBtn.userInteractionEnabled = true
+            self.heavyAtkBtn.userInteractionEnabled = true
         }
         initAudio()
     }
@@ -78,7 +88,41 @@ class BatttleViewController: UIViewController {
         } catch _ as NSError {
             print("Error with Audio?")
         }
-
+    }
+    
+    func uponDefeat() {
+        // create alert
+        let alert = UIAlertController(title: "Defeated!", message: "You were unable to capture this iBeamon...", preferredStyle: UIAlertControllerStyle.Alert)
+        
+        // add actions
+        alert.addAction(UIAlertAction(title: "Close", style: UIAlertActionStyle.Cancel, handler: { action in self.forfeitConfirmed() }))
+        
+        // show alert
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func uponVictory() {
+        let alert = UIAlertController(title: "Victory!", message: "You successfully defeated and captured this iBeamon!", preferredStyle: UIAlertControllerStyle.Alert)
+        
+        // add actions
+        alert.addAction(UIAlertAction(title: "Continue Searching", style: UIAlertActionStyle.Default, handler: { action in self.forfeitConfirmed() }))
+        alert.addAction(UIAlertAction(title: "Check Collection", style: UIAlertActionStyle.Cancel, handler: { action in self.goToCollection() }))
+        
+        // show alert
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        if segue.identifier == "ViewController" {
+            if let dexVC = segue.destinationViewController as? ViewController {
+                if let activeId = sender as? Int {
+                    dexVC.activeId = activeId
+                    dexVC.musicPlayer = musicPlayer
+                }
+            }
+            //musicPlayer.stop()
+        }
     }
     
     func updateStats(target: Pokemon) {
@@ -158,6 +202,11 @@ class BatttleViewController: UIViewController {
         dismissViewControllerAnimated(true, completion: nil)
     }
     
+    func goToCollection() {
+        print(activeId)
+        performSegueWithIdentifier("ViewController", sender: activeId)
+    }
+    
     // BATTLE SECTION
     
     func updateHealth() {
@@ -176,8 +225,10 @@ class BatttleViewController: UIViewController {
     @IBAction func lightAttack(sender: UIButton) {
         if opponentHP <= 0 {
             print("You win!")
+            uponVictory()
         } else if activeHP <= 0 {
             print("You lose!")
+            uponDefeat()
         } else {
             activeLightAttack()
             opponentLightAttack()
@@ -187,8 +238,10 @@ class BatttleViewController: UIViewController {
     @IBAction func heavyAttack(sender: UIButton) {
         if opponentHP <= 0 {
             print("You win!")
+            uponVictory()
         } else if activeHP <= 0 {
             print("You lose!")
+            uponDefeat()
         } else {
             if hitChance() <= 75 {
                 activeHeavyAttack()

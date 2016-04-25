@@ -137,8 +137,10 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
                     dexVC.musicPlayer = musicPlayer
                 }
             }
+            musicPlayer.stop()
         }
     }
+    
     @IBAction func activePokemonPressed(sender: AnyObject) {
         performSegueWithIdentifier("ViewController", sender: activeId)
     }
@@ -161,10 +163,8 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
             user.capture(5)
             user.capture(243)
             user.capture(244)
-        }
-        
+        }        
         // set active & caught relationship
-        starter.setValue(user, forKey: "owned")
 
         user.setValue(starter, forKey: "active")
     }
