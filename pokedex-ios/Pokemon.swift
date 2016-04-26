@@ -96,15 +96,12 @@ class Pokemon : NSManagedObject {
                                     }
                                 }
                                 self.ineffectiveVersus = ineffectives
-                                
-                                print("super effective \(self.effectiveVersus)")
-                                print("nve \(self.ineffectiveVersus)")
                             }
                         }
+                        completed()
                     }
                 }
             }
-            completed()
         }
         
         // fetch evolution data
@@ -155,7 +152,6 @@ class Pokemon : NSManagedObject {
                     self.nextEvoId = 99999
                 }
             }
-            completed()
         }
         
         // fetch description data
@@ -172,7 +168,6 @@ class Pokemon : NSManagedObject {
                     }
                 }
             }
-            completed()
         }
     }    
 }
