@@ -13,6 +13,12 @@ import AVFoundation
 class BatttleViewController: UIViewController {
     
     // properties
+    let level = 10
+    let lightPower = 40
+    let heavyPower = 60
+    let lightAccuracy = 100
+    let heavyAccuracy = 70
+    
     var opponentPokemon: Pokemon!
     var activePokemon: Pokemon!
     
@@ -222,65 +228,77 @@ class BatttleViewController: UIViewController {
         activeHPValue.text = "\(activeHP)"
     }
     
-    func randomizer() -> Int {
-        return Int(arc4random_uniform(UInt32(15))) + 85
+    func randomizer() -> Double {
+        return Double(Int(arc4random_uniform(UInt32(15))) + 85)
     }
     func hitChance() -> Int {
-        return Int(arc4random_uniform(UInt32(100)))
+        return Int(arc4random_uniform(UInt32(99))) + 1
     }
     
     // MARK: Attacks
     @IBAction func lightAttack(sender: UIButton) {
+        let activeDmg = getLightAttack(activePokemon, defender: opponentPokemon)
+        let opponentDmg = getLightAttack(opponentPokemon, defender: activePokemon)
+        opponentHP = opponentPokemon.takeDamage(activeDmg)
+        activeHP = activePokemon.takeDamage(opponentDmg)
+        updateHealth()
+        
         if opponentHP <= 0 {
             print("You win!")
             uponVictory()
         } else if activeHP <= 0 {
             print("You lose!")
             uponDefeat()
-        } else {
-            activeLightAttack()
-            opponentLightAttack()
         }
+        print("light opp atk . \(opponentDmg)")
+        print("light active atk . \(activeDmg)")
     }
     
     @IBAction func heavyAttack(sender: UIButton) {
+        let activeDmg = getHeavyAttack(activePokemon, defender: opponentPokemon)
+        let opponentDmg = getHeavyAttack(opponentPokemon, defender: activePokemon)
+        opponentHP = opponentPokemon.takeDamage(activeDmg)
+        activeHP = activePokemon.takeDamage(opponentDmg)
+        updateHealth()
+        
         if opponentHP <= 0 {
             print("You win!")
             uponVictory()
         } else if activeHP <= 0 {
             print("You lose!")
             uponDefeat()
-        } else {
-            if hitChance() <= 75 {
-                activeHeavyAttack()
-            } else {
-                print("You missed!")
-            }
-            if hitChance() <= 75 {
-                opponentHeavyAttack()
-            } else {
-                print("Opponent missed!")
+        }
+        print("heavy opp atk . \(opponentDmg)")
+        print("heavy active atk . \(activeDmg)")
+    }
+    
+    func getMatchup(attacker: Pokemon, defender: Pokemon) -> Double {
+        if let effectives = attacker.valueForKey("effectiveVersus") as? String, ineffectives = attacker.valueForKey("ineffectiveVersus") as? String {
+            if let defenderType = defender.valueForKey("typeFirst") as? String {
+                if (effectives.rangeOfString(defenderType) != nil) {
+                    print("supereffective!")
+                    return 2.0
+                } else if (ineffectives.rangeOfString(defenderType) != nil) {
+                    print("not very effective...")
+                    return 0.5
+                }
             }
         }
+        return 1
     }
     
-    func activeLightAttack() {
-        opponentHP = opponentHP - ((((( 2 * 10 / 5 + 2) * activeAttack * 40 / opponentDefence) / 50 ) * 1 * randomizer() / 100 ) + 1 )
-        updateHealth()
+    func getLightAttack(attacker: Pokemon, defender: Pokemon) -> Int {
+        
+        var dmg = Double((( 2 * level / 5 + 2) * (attacker.valueForKey("attack")!.integerValue) * lightPower / (defender.valueForKey("defense")!.integerValue)) / 50)
+        dmg = dmg * getMatchup(attacker, defender: defender) * randomizer() / 100 + 1
+        return Int(dmg)
     }
     
-    func activeHeavyAttack() {
-        opponentHP = opponentHP - ((((( 2 * 10 / 5 + 2) * activeAttack * 60 / opponentDefence) / 50 ) * 1 * randomizer() / 100 ) + 1 )
-        updateHealth()
-    }
-    
-    func opponentLightAttack() {
-        activeHP = activeHP - ((((( 2 * 10 / 5 + 2) * opponentAttack * 40 / activeDefence) / 50 ) * 1 * randomizer() / 100 ) + 1 )
-        updateHealth()
-    }
-    
-    func opponentHeavyAttack() {
-        activeHP = activeHP - ((((( 2 * 10 / 5 + 2) * opponentAttack * 60 / activeDefence) / 50 ) * 1 * randomizer() / 100 ) + 1 )
-        updateHealth()
+    func getHeavyAttack(attacker: Pokemon, defender: Pokemon) -> Int {
+        
+        var dmg = Double((( 2 * level / 5 + 2) * (attacker.valueForKey("attack")!.integerValue) * heavyPower / (defender.valueForKey("defense")!.integerValue)) / 50)
+        dmg = dmg * getMatchup(attacker, defender: defender) * randomizer() / 100 + 1
+        return Int(dmg)
+
     }
 }

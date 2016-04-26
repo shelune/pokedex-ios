@@ -45,20 +45,18 @@ class CoreDataInit {
         return []
     }
     
-    func searchForActive() -> Int {
+    func searchForActive() -> NSManagedObject {
         let allPoke = self.searchEntity("Pokemon")
+        var pokemon: NSManagedObject!
         
         for poke in allPoke {
             if let poke = poke as? NSManagedObject {
                 if poke.valueForKey("chosen") != nil {
-                    if let pokemonId = poke.valueForKey("pokedexId") as? Int {
-                        return pokemonId
-                    }
+                    return poke
                 }
             }
         }
-        
-        return 0
+        return pokemon
     }
     
     func searchForOwned() -> [Int] {
