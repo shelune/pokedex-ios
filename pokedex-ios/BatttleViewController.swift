@@ -68,7 +68,7 @@ class BatttleViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // set opponent stats
-        print("opponent: \(opponentPokemon.valueForKey("chosen"))")
+        print("opponent: \(opponentPokemon.valueForKey("pokedexId"))")
         opponentPokemon.downloadPokemonDetails { () -> () in
             self.updateStats(self.opponentPokemon)
             
@@ -88,28 +88,6 @@ class BatttleViewController: UIViewController {
         } catch _ as NSError {
             print("Error with Audio?")
         }
-    }
-    
-    func uponDefeat() {
-        // create alert
-        let alert = UIAlertController(title: "Defeated!", message: "You were unable to capture this iBeamon...", preferredStyle: UIAlertControllerStyle.Alert)
-        
-        // add actions
-        alert.addAction(UIAlertAction(title: "Close", style: UIAlertActionStyle.Cancel, handler: { action in self.forfeitConfirmed() }))
-        
-        // show alert
-        self.presentViewController(alert, animated: true, completion: nil)
-    }
-    
-    func uponVictory() {
-        let alert = UIAlertController(title: "Victory!", message: "You successfully defeated and captured this iBeamon!", preferredStyle: UIAlertControllerStyle.Alert)
-        
-        // add actions
-        alert.addAction(UIAlertAction(title: "Continue Searching", style: UIAlertActionStyle.Default, handler: { action in self.forfeitConfirmed() }))
-        alert.addAction(UIAlertAction(title: "Check Collection", style: UIAlertActionStyle.Cancel, handler: { action in self.goToCollection() }))
-        
-        // show alert
-        self.presentViewController(alert, animated: true, completion: nil)
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -208,6 +186,36 @@ class BatttleViewController: UIViewController {
     }
     
     // BATTLE SECTION
+    
+    func uponDefeat() {
+        // create alert
+        let alert = UIAlertController(title: "Defeated!", message: "You were unable to capture this iBeamon...", preferredStyle: UIAlertControllerStyle.Alert)
+        
+        // add actions
+        alert.addAction(UIAlertAction(title: "Close", style: UIAlertActionStyle.Cancel, handler: { action in self.forfeitConfirmed() }))
+        
+        // show alert
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func uponVictory() {
+        
+        let cdInstance = CoreDataInit.instance
+        let user = cdInstance.entityUser()
+        
+        if let user = user as? User {
+            user.capture(opponentPokemon.valueForKey("pokedexId")!.integerValue)
+        }
+        
+        let alert = UIAlertController(title: "Victory!", message: "You successfully defeated and captured this iBeamon!", preferredStyle: UIAlertControllerStyle.Alert)
+        
+        // add actions
+        alert.addAction(UIAlertAction(title: "Continue Searching", style: UIAlertActionStyle.Default, handler: { action in self.forfeitConfirmed() }))
+        alert.addAction(UIAlertAction(title: "Check Collection", style: UIAlertActionStyle.Cancel, handler: { action in self.goToCollection() }))
+        
+        // show alert
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
     
     func updateHealth() {
         opponentHPValue.text = "\(opponentHP)"
