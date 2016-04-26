@@ -37,6 +37,12 @@
 		6A131C801CC3C91E00432029 /* BatttleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A131C7F1CC3C91E00432029 /* BatttleViewController.swift */; };
 		6A131C811CC3C91E00432029 /* BatttleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A131C7F1CC3C91E00432029 /* BatttleViewController.swift */; };
 		6A131C821CC3C91E00432029 /* BatttleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A131C7F1CC3C91E00432029 /* BatttleViewController.swift */; };
+		6A2FB4171CCF833C0095893B /* PokeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A00748E1CB5B4FF0042A18F /* PokeCell.swift */; };
+		6A2FB4181CCF833C0095893B /* PokeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A00748E1CB5B4FF0042A18F /* PokeCell.swift */; };
+		6A2FB4191CCF843B0095893B /* CSVparser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0074931CB648DC0042A18F /* CSVparser.swift */; };
+		6A2FB41A1CCF843C0095893B /* CSVparser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0074931CB648DC0042A18F /* CSVparser.swift */; };
+		6A2FB41B1CCF84420095893B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0074581CB538CE0042A18F /* AppDelegate.swift */; };
+		6A2FB41C1CCF84430095893B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0074581CB538CE0042A18F /* AppDelegate.swift */; };
 		6A618ACF1CC79EF5009586F7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A00745A1CB538CE0042A18F /* ViewController.swift */; };
 		6A618AD01CC79EF5009586F7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A00745A1CB538CE0042A18F /* ViewController.swift */; };
 		6A618AD21CC79F73009586F7 /* CoreDataInit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A618AD11CC79F73009586F7 /* CoreDataInit.swift */; };
@@ -481,8 +487,11 @@
 				6A618AD31CC79F73009586F7 /* CoreDataInit.swift in Sources */,
 				6A131C811CC3C91E00432029 /* BatttleViewController.swift in Sources */,
 				6A0075071CB7A1850042A18F /* User.swift in Sources */,
+				6A2FB41B1CCF84420095893B /* AppDelegate.swift in Sources */,
 				6A9388D41CCEC715009B5490 /* Pokemon+CoreDataProperties.swift in Sources */,
+				6A2FB4171CCF833C0095893B /* PokeCell.swift in Sources */,
 				6AB280531CBAB58C0071FC16 /* Constants.swift in Sources */,
+				6A2FB4191CCF843B0095893B /* CSVparser.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -498,8 +507,11 @@
 				6A618AD41CC79F73009586F7 /* CoreDataInit.swift in Sources */,
 				6A131C821CC3C91E00432029 /* BatttleViewController.swift in Sources */,
 				6A0074791CB538CE0042A18F /* pokedex_iosUITests.swift in Sources */,
+				6A2FB41C1CCF84430095893B /* AppDelegate.swift in Sources */,
 				6A9388D51CCEC715009B5490 /* Pokemon+CoreDataProperties.swift in Sources */,
+				6A2FB4181CCF833C0095893B /* PokeCell.swift in Sources */,
 				6AB280511CBAB40A0071FC16 /* Pokemon.swift in Sources */,
+				6A2FB41A1CCF843C0095893B /* CSVparser.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
