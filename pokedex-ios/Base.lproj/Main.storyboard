@@ -181,6 +181,7 @@
                                         </state>
                                         <connections>
                                             <action selector="backBtnPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="epE-uY-wGm"/>
+                                            <segue destination="0oD-uf-avA" kind="unwind" unwindAction="unwindToScanner:" id="TRd-Sg-5f4"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -293,9 +294,11 @@
                         <outlet property="collectionDex" destination="tO2-aL-aOR" id="HGP-5k-rnC"/>
                         <outlet property="searchBar" destination="Yqh-IG-mUi" id="inu-DV-z2U"/>
                         <segue destination="U12-JP-fpp" kind="presentation" identifier="PokemonDetailVC" id="Dns-9k-4YX"/>
+                        <segue destination="0oD-uf-avA" kind="unwind" identifier="unwindToScanner" unwindAction="unwindToVC:" id="ZSP-tc-zEU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <exit id="0oD-uf-avA" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="-266" y="416"/>
         </scene>

@@ -16,6 +16,7 @@ class Pokemon : NSManagedObject {
         let url = NSURL(string: "\(URL_BASE)\(URL_POKEMON)\(pokedexId!.integerValue)")!
         let speciesUrl = NSURL(string: "\(URL_BASE)\(URL_SPECIES)\(pokedexId!.integerValue)")!
         let alternativeUrl = NSURL(string: "\(URL_BASE_ALT)\(URL_POKEMON)\(pokedexId!.integerValue)")!
+        var typeUrl = ""
         
         print(url)
         
@@ -52,13 +53,41 @@ class Pokemon : NSManagedObject {
                 if let types = result["types"] as? [AnyObject] {
                     var firstType = ""
                     var secondType = ""
-                    firstType = (types[0]["type"]!!["name"] as! String)
+                    firstType = types[0]["type"]!!["name"] as! String
+                    typeUrl = types[0]["type"]!!["url"] as! String
                     if (types.count > 1) {
                         secondType = (types[1]["type"]!!["name"] as! String)
                     }
                     self.typeFirst = firstType
                     self.typeSecond = secondType
                     
+                    Alamofire.request(.GET, typeUrl).responseJSON {
+                        response in
+                        if let result = response.result.value {
+                            if let dmgRelations = result["damage_relations"] {
+                                var effectives = ""
+                                var ineffectives = ""
+                                if let effective = dmgRelations!["double_damage_to"] as? [AnyObject] {
+                                    for (key, value) in effective.enumerate() {
+                                        if let type = value["name"] as? String {
+                                            effectives += type
+                                        }
+                                    }
+                                }
+                                
+                                if let ineffective = dmgRelations!["half_damage_to"] as? [AnyObject] {
+                                    for (key, value) in ineffective.enumerate() {
+                                        if let type = value["name"] as? String {
+                                            ineffectives += type
+                                        }
+                                    }
+                                }
+                                
+                                print(effectives)
+                                print(ineffectives)
+                            }
+                        }
+                    }
                 }
             }
             completed()
