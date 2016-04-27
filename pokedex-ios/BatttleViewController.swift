@@ -82,15 +82,19 @@ class BatttleViewController: UIViewController {
             self.lightAtkBtn.userInteractionEnabled = true
             self.heavyAtkBtn.userInteractionEnabled = true
         }
-        initAudio()
+        initAudio("battle-theme", loop: true)
     }
     
-    func initAudio() {
-        let path = NSBundle.mainBundle().pathForResource("battle-theme", ofType: "mp3")
+    func initAudio(song: String, loop: Bool) {
+        let path = NSBundle.mainBundle().pathForResource(song, ofType: "mp3")
         do {
             musicPlayer = try AVAudioPlayer(contentsOfURL: NSURL(string: path!)!)
             musicPlayer.prepareToPlay()
-            musicPlayer.numberOfLoops = -1
+            if loop {
+                musicPlayer.numberOfLoops = -1
+            } else {
+                musicPlayer.numberOfLoops = 0
+            }
             musicPlayer.play()
         } catch _ as NSError {
             print("Error with Audio?")
@@ -196,6 +200,8 @@ class BatttleViewController: UIViewController {
     
     func uponDefeat() {
         // create alert
+        musicPlayer.stop()
+        initAudio("loss-sound", loop: false)
         let alert = UIAlertController(title: "Defeated!", message: "You were unable to capture this iBeamon...", preferredStyle: UIAlertControllerStyle.Alert)
         
         // add actions
@@ -206,6 +212,8 @@ class BatttleViewController: UIViewController {
     }
     
     func uponVictory() {
+        musicPlayer.stop()
+        initAudio("obtain-sound", loop: false)
         
         let cdInstance = CoreDataInit.instance
         let user = cdInstance.entityUser()
