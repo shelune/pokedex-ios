@@ -110,7 +110,7 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
     }
     
     @IBAction func onBattleTriggered(sender: AnyObject) {
-        opponentId = Int(arc4random_uniform(UInt32(718))) + 1
+        opponentId = 4
         
         let cdInstance = CoreDataInit.instance
         let poke = cdInstance.entityPokemon()

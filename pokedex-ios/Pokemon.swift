@@ -12,6 +12,18 @@ import Alamofire
 
 class Pokemon : NSManagedObject {
     
+    func takeDamage(dmg: Int) -> Int {
+        if self.hp != nil {
+            if (Int(self.hp!)! - dmg > 0) {
+                self.hp = "\(Int(self.hp!)! - dmg)"
+                return Int(self.hp!)!
+            } else {
+                return 0
+            }
+        }
+        return 0
+    }
+    
     func downloadPokemonDetails(completed: DownloadComplete) {
         let url = NSURL(string: "\(URL_BASE)\(URL_POKEMON)\(pokedexId!.integerValue)")!
         let speciesUrl = NSURL(string: "\(URL_BASE)\(URL_SPECIES)\(pokedexId!.integerValue)")!
@@ -74,6 +86,7 @@ class Pokemon : NSManagedObject {
                                         }
                                     }
                                 }
+                                self.effectiveVersus = effectives
                                 
                                 if let ineffective = dmgRelations!["half_damage_to"] as? [AnyObject] {
                                     for (key, value) in ineffective.enumerate() {
@@ -82,9 +95,10 @@ class Pokemon : NSManagedObject {
                                         }
                                     }
                                 }
+                                self.ineffectiveVersus = ineffectives
                                 
-                                print(effectives)
-                                print(ineffectives)
+                                print("super effective \(self.effectiveVersus)")
+                                print("nve \(self.ineffectiveVersus)")
                             }
                         }
                     }
