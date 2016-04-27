@@ -78,6 +78,15 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
             if beacon.proximity == CLProximity.Immediate {
                 print("Detected")
                 detectionLabel.text = "Detection"
+                // create alert
+                let alert = UIAlertController(title: "iBeamon detected!", message: "Would you like to forfeit this battle?", preferredStyle: UIAlertControllerStyle.Alert)
+                
+                // add actions
+                alert.addAction(UIAlertAction(title: "Battle", style: UIAlertActionStyle.Cancel, handler: { action in self.battleTrigger() }))
+                alert.addAction(UIAlertAction(title: "Ignore", style: UIAlertActionStyle.Default, handler: nil))
+                
+                // show alert
+                self.presentViewController(alert, animated: true, completion: nil)
             } else {
                 print("Not close enough")
                 detectionLabel.text = "Not close enough"
@@ -110,6 +119,17 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
     }
     
     @IBAction func onBattleTriggered(sender: AnyObject) {
+        opponentId = Int(arc4random_uniform(UInt32(718))) + 1
+        
+        let cdInstance = CoreDataInit.instance
+        let poke = cdInstance.entityPokemon()
+        
+        poke.setValue(opponentId, forKey: "pokedexId")
+        
+        performSegueWithIdentifier("BattleViewController", sender: poke)
+    }
+    
+    func battleTrigger() {
         opponentId = Int(arc4random_uniform(UInt32(718))) + 1
         
         let cdInstance = CoreDataInit.instance
