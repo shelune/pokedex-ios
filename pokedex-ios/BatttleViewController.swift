@@ -77,19 +77,24 @@ class BatttleViewController: UIViewController {
         print("opponent: \(opponentPokemon.valueForKey("pokedexId"))")
         opponentPokemon.downloadPokemonDetails { () -> () in
             self.updateStats(self.opponentPokemon)
-            
+            self.lightAtkBtn.alpha = 1.0
+            self.heavyAtkBtn.alpha = 1.0
             self.lightAtkBtn.userInteractionEnabled = true
             self.heavyAtkBtn.userInteractionEnabled = true
         }
-        initAudio()
+        initAudio("battle-theme", loop: true)
     }
     
-    func initAudio() {
-        let path = NSBundle.mainBundle().pathForResource("battle-theme", ofType: "mp3")
+    func initAudio(song: String, loop: Bool) {
+        let path = NSBundle.mainBundle().pathForResource(song, ofType: "mp3")
         do {
             musicPlayer = try AVAudioPlayer(contentsOfURL: NSURL(string: path!)!)
             musicPlayer.prepareToPlay()
-            musicPlayer.numberOfLoops = -1
+            if loop {
+                musicPlayer.numberOfLoops = -1
+            } else {
+                musicPlayer.numberOfLoops = 0
+            }
             musicPlayer.play()
         } catch _ as NSError {
             print("Error with Audio?")
@@ -195,6 +200,8 @@ class BatttleViewController: UIViewController {
     
     func uponDefeat() {
         // create alert
+        musicPlayer.stop()
+        initAudio("loss-sound", loop: false)
         let alert = UIAlertController(title: "Defeated!", message: "You were unable to capture this iBeamon...", preferredStyle: UIAlertControllerStyle.Alert)
         
         // add actions
@@ -205,6 +212,8 @@ class BatttleViewController: UIViewController {
     }
     
     func uponVictory() {
+        musicPlayer.stop()
+        initAudio("obtain-sound", loop: false)
         
         let cdInstance = CoreDataInit.instance
         let user = cdInstance.entityUser()
@@ -231,14 +240,22 @@ class BatttleViewController: UIViewController {
     func randomizer() -> Double {
         return Double(Int(arc4random_uniform(UInt32(15))) + 85)
     }
+    
     func hitChance() -> Int {
         return Int(arc4random_uniform(UInt32(99))) + 1
     }
     
-    // MARK: Attacks
-    @IBAction func lightAttack(sender: UIButton) {
-        let activeDmg = getLightAttack(activePokemon, defender: opponentPokemon)
-        let opponentDmg = getLightAttack(opponentPokemon, defender: activePokemon)
+    func updateBattle(damageType: String) {
+        var activeDmg = 0
+        var opponentDmg = 0
+        if damageType == "light" {
+            activeDmg = getLightAttack(activePokemon, defender: opponentPokemon)
+            opponentDmg = getLightAttack(opponentPokemon, defender: activePokemon)
+        } else {
+            activeDmg = getHeavyAttack(activePokemon, defender: opponentPokemon)
+            opponentDmg = getHeavyAttack(opponentPokemon, defender: activePokemon)
+        }
+        
         opponentHP = opponentPokemon.takeDamage(activeDmg)
         activeHP = activePokemon.takeDamage(opponentDmg)
         updateHealth()
@@ -250,26 +267,15 @@ class BatttleViewController: UIViewController {
             print("You lose!")
             uponDefeat()
         }
-        print("light opp atk . \(opponentDmg)")
-        print("light active atk . \(activeDmg)")
+    }
+    
+    // MARK: Attacks
+    @IBAction func lightAttack(sender: UIButton) {
+        updateBattle("light")
     }
     
     @IBAction func heavyAttack(sender: UIButton) {
-        let activeDmg = getHeavyAttack(activePokemon, defender: opponentPokemon)
-        let opponentDmg = getHeavyAttack(opponentPokemon, defender: activePokemon)
-        opponentHP = opponentPokemon.takeDamage(activeDmg)
-        activeHP = activePokemon.takeDamage(opponentDmg)
-        updateHealth()
-        
-        if opponentHP <= 0 {
-            print("You win!")
-            uponVictory()
-        } else if activeHP <= 0 {
-            print("You lose!")
-            uponDefeat()
-        }
-        print("heavy opp atk . \(opponentDmg)")
-        print("heavy active atk . \(activeDmg)")
+        updateBattle("heavy")
     }
     
     func getMatchup(attacker: Pokemon, defender: Pokemon) -> Double {
@@ -288,17 +294,12 @@ class BatttleViewController: UIViewController {
     }
     
     func getLightAttack(attacker: Pokemon, defender: Pokemon) -> Int {
-        
-        var dmg = Double((( 2 * level / 5 + 2) * (attacker.valueForKey("attack")!.integerValue) * lightPower / (defender.valueForKey("defense")!.integerValue)) / 50)
-        dmg = dmg * getMatchup(attacker, defender: defender) * randomizer() / 100 + 1
+        var dmg = Double((( 2 * level / 5 + 2) * (attacker.valueForKey("attack")!.integerValue) * lightPower / (defender.valueForKey("defense")!.integerValue)) / 50) * getMatchup(attacker, defender: defender) * randomizer() / 100 + 1
         return Int(dmg)
     }
     
     func getHeavyAttack(attacker: Pokemon, defender: Pokemon) -> Int {
-        
-        var dmg = Double((( 2 * level / 5 + 2) * (attacker.valueForKey("attack")!.integerValue) * heavyPower / (defender.valueForKey("defense")!.integerValue)) / 50)
-        dmg = dmg * getMatchup(attacker, defender: defender) * randomizer() / 100 + 1
+        var dmg = Double((( 2 * level / 5 + 2) * (attacker.valueForKey("attack")!.integerValue) * heavyPower / (defender.valueForKey("defense")!.integerValue)) / 50) * getMatchup(attacker, defender: defender) * randomizer() / 100 + 1
         return Int(dmg)
-
     }
 }

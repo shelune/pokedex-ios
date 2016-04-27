@@ -43,6 +43,8 @@
 		6A2FB41A1CCF843C0095893B /* CSVparser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0074931CB648DC0042A18F /* CSVparser.swift */; };
 		6A2FB41B1CCF84420095893B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0074581CB538CE0042A18F /* AppDelegate.swift */; };
 		6A2FB41C1CCF84430095893B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0074581CB538CE0042A18F /* AppDelegate.swift */; };
+		6A2FB4221CCFD7350095893B /* obtain-sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6A2FB4211CCFD7350095893B /* obtain-sound.mp3 */; };
+		6A2FB4241CCFDBB60095893B /* loss-sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6A2FB4231CCFDBB60095893B /* loss-sound.mp3 */; };
 		6A618ACF1CC79EF5009586F7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A00745A1CB538CE0042A18F /* ViewController.swift */; };
 		6A618AD01CC79EF5009586F7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A00745A1CB538CE0042A18F /* ViewController.swift */; };
 		6A618AD21CC79F73009586F7 /* CoreDataInit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A618AD11CC79F73009586F7 /* CoreDataInit.swift */; };
@@ -105,6 +107,8 @@
 		6A0075021CB7A1850042A18F /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		6A0075091CB7BE1A0042A18F /* battle-theme.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "battle-theme.mp3"; sourceTree = "<group>"; };
 		6A131C7F1CC3C91E00432029 /* BatttleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BatttleViewController.swift; sourceTree = "<group>"; };
+		6A2FB4211CCFD7350095893B /* obtain-sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "obtain-sound.mp3"; sourceTree = "<group>"; };
+		6A2FB4231CCFDBB60095893B /* loss-sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "loss-sound.mp3"; sourceTree = "<group>"; };
 		6A618AD11CC79F73009586F7 /* CoreDataInit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataInit.swift; sourceTree = "<group>"; };
 		6A618AD51CC972E7009586F7 /* collection-theme.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "collection-theme.mp3"; sourceTree = "<group>"; };
 		6A9388D21CCEC715009B5490 /* Pokemon+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Pokemon+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -258,6 +262,8 @@
 			isa = PBXGroup;
 			children = (
 				6A0075091CB7BE1A0042A18F /* battle-theme.mp3 */,
+				6A2FB4231CCFDBB60095893B /* loss-sound.mp3 */,
+				6A2FB4211CCFD7350095893B /* obtain-sound.mp3 */,
 				6A618AD51CC972E7009586F7 /* collection-theme.mp3 */,
 				6A0074F11CB66C3D0042A18F /* main-theme.mp3 */,
 				6A0074861CB53B410042A18F /* pokemon.csv */,
@@ -336,7 +342,7 @@
 				TargetAttributes = {
 					6A0074541CB538CE0042A18F = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = 47U8JF7XPR;
+						DevelopmentTeam = 5UAANGYA6Z;
 					};
 					6A0074681CB538CE0042A18F = {
 						CreatedOnToolsVersion = 7.3;
@@ -377,7 +383,9 @@
 			files = (
 				6A618AD61CC972E8009586F7 /* collection-theme.mp3 in Resources */,
 				6A0074631CB538CE0042A18F /* LaunchScreen.storyboard in Resources */,
+				6A2FB4241CCFDBB60095893B /* loss-sound.mp3 in Resources */,
 				6A0074601CB538CE0042A18F /* Assets.xcassets in Resources */,
+				6A2FB4221CCFD7350095893B /* obtain-sound.mp3 in Resources */,
 				6A0074871CB53B410042A18F /* pokemon.csv in Resources */,
 				6A00745E1CB538CE0042A18F /* Main.storyboard in Resources */,
 				6A00750A1CB7BE1A0042A18F /* battle-theme.mp3 in Resources */,
@@ -643,8 +651,9 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "pokedex-ios/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "shelune.pokedex-ios";
+				PRODUCT_BUNDLE_IDENTIFIER = "blocio.pokedex-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -658,8 +667,9 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "pokedex-ios/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "shelune.pokedex-ios";
+				PRODUCT_BUNDLE_IDENTIFIER = "blocio.pokedex-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
