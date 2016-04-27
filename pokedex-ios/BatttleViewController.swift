@@ -230,7 +230,11 @@ class BatttleViewController: UIViewController {
     }
     func attackRandomizer() {
         if Int(arc4random_uniform(UInt32(100))) < 50 {
-            opponentHeavyAttack()
+            if hitChance() <= 75 {
+                opponentHeavyAttack()
+            } else {
+                print("Opponent missed!")
+            }
         } else {
             opponentLightAttack()
         }
@@ -263,11 +267,7 @@ class BatttleViewController: UIViewController {
             } else {
                 print("You missed!")
             }
-            if hitChance() <= 75 {
-                attackRandomizer()
-            } else {
-                print("Opponent missed!")
-            }
+            attackRandomizer()
         }
     }
     
