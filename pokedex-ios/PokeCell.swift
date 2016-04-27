@@ -43,6 +43,8 @@ class PokeCell: UICollectionViewCell {
     }
     
     func longPressCell(sender: UIImageView) {
+        let cdInstance = CoreDataInit.instance
+        
         let parentView = self.superview?.superview
         if let subviews = parentView?.subviews {
             for subview in subviews {
@@ -58,22 +60,9 @@ class PokeCell: UICollectionViewCell {
             }
         }
         
-        rectifyActive(self.tag)
+        // change active to the selected pokemon
+        if let user = cdInstance.entityUser() as? User {
+            user.setPokemonActive(self.tag)
+        }
     }
-    
-    func rectifyActive(newActive: Int) {
-        let cdInstance = CoreDataInit.instance
-        let user = cdInstance.entityUser()
-        
-        let currentActiveId = cdInstance.searchForActive()
-        print("current active: \(currentActiveId)")
-        
-        // reset and set new active
-        cdInstance.searchForPoke(currentActiveId).setValue(nil, forKey: "chosen")
-        cdInstance.searchForPoke(newActive).setValue(user, forKey: "chosen")
-        
-        print("new active: \(newActive)")
-        
-    }
-    
 }
