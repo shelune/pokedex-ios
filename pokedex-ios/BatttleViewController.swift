@@ -242,18 +242,7 @@ class BatttleViewController: UIViewController {
     }
     
     func hitChance() -> Int {
-        return Int(arc4random_uniform(UInt32(99))) + 1
-    }
-    func attackRandomizer() {
-        if Int(arc4random_uniform(UInt32(100))) < 50 {
-            if hitChance() <= 75 {
-                opponentHeavyAttack()
-            } else {
-                print("Opponent missed!")
-            }
-        } else {
-            opponentLightAttack()
-        }
+        return Int(arc4random_uniform(UInt32(100)))
     }
     
     func updateBattle(damageType: String) {
@@ -261,9 +250,14 @@ class BatttleViewController: UIViewController {
         var opponentDmg = 0
         if damageType == "light" {
             activeDmg = getLightAttack(activePokemon, defender: opponentPokemon)
-            opponentDmg = getLightAttack(opponentPokemon, defender: activePokemon)
         } else {
             activeDmg = getHeavyAttack(activePokemon, defender: opponentPokemon)
+        }
+        
+        if hitChance() <= 50 {
+            opponentDmg = getLightAttack(opponentPokemon, defender: activePokemon)
+        }
+        else {
             opponentDmg = getHeavyAttack(opponentPokemon, defender: activePokemon)
         }
         
@@ -277,9 +271,6 @@ class BatttleViewController: UIViewController {
         } else if activeHP <= 0 {
             print("You lose!")
             uponDefeat()
-        } else {
-            activeLightAttack()
-            attackRandomizer()
         }
     }
     
@@ -289,28 +280,7 @@ class BatttleViewController: UIViewController {
     }
     
     @IBAction func heavyAttack(sender: UIButton) {
-        let activeDmg = getHeavyAttack(activePokemon, defender: opponentPokemon)
-        let opponentDmg = getHeavyAttack(opponentPokemon, defender: activePokemon)
-        opponentHP = opponentPokemon.takeDamage(activeDmg)
-        activeHP = activePokemon.takeDamage(opponentDmg)
-        updateHealth()
-        
-        if opponentHP <= 0 {
-            print("You win!")
-            uponVictory()
-        } else if activeHP <= 0 {
-            print("You lose!")
-            uponDefeat()
-        } else {
-            if hitChance() <= 75 {
-                activeHeavyAttack()
-            } else {
-                print("You missed!")
-            }
-            attackRandomizer()
-        }
-        print("heavy opp atk . \(opponentDmg)")
-        print("heavy active atk . \(activeDmg)")
+        updateBattle("heavy")
     }
     
     func getMatchup(attacker: Pokemon, defender: Pokemon) -> Double {
@@ -334,7 +304,11 @@ class BatttleViewController: UIViewController {
     }
     
     func getHeavyAttack(attacker: Pokemon, defender: Pokemon) -> Int {
-        var dmg = Double((( 2 * level / 5 + 2) * (attacker.valueForKey("attack")!.integerValue) * heavyPower / (defender.valueForKey("defense")!.integerValue)) / 50) * getMatchup(attacker, defender: defender) * randomizer() / 100 + 1
-        return Int(dmg)
+        if hitChance() < 75 {
+            var dmg = Double((( 2 * level / 5 + 2) * (attacker.valueForKey("attack")!.integerValue) * heavyPower / (defender.valueForKey("defense")!.integerValue)) / 50) * getMatchup(attacker, defender: defender) * randomizer() / 100 + 1
+            return Int(dmg)
+        }
+        print("\(attacker.valueForKey("name")) missed")
+        return 0
     }
 }
