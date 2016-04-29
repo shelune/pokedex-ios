@@ -71,6 +71,14 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
         locationManager.startRangingBeaconsInRegion(beaconRegion)
     }
     
+    func stopScanning() {
+        let uuid = NSUUID(UUIDString: "B9407F30-F5F8-466E-AFF9-25556B57FE6D")
+        let beaconRegion = CLBeaconRegion(proximityUUID: uuid!, identifier: "iBeamon")
+        
+        locationManager.stopMonitoringForRegion(beaconRegion)
+        locationManager.stopRangingBeaconsInRegion(beaconRegion)
+    }
+    
     func locationManager(manager: CLLocationManager, didRangeBeacons beacons: [CLBeacon], inRegion region: CLBeaconRegion) {
         print(beacons.count)
         if beacons.count > 0 {
@@ -136,6 +144,8 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
         let poke = cdInstance.entityPokemon()
         
         poke.setValue(opponentId, forKey: "pokedexId")
+        
+        stopScanning()
         
         performSegueWithIdentifier("BattleViewController", sender: poke)
     }

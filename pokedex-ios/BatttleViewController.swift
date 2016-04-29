@@ -242,7 +242,7 @@ class BatttleViewController: UIViewController {
     }
     
     func hitChance() -> Int {
-        return Int(arc4random_uniform(UInt32(99))) + 1
+        return Int(arc4random_uniform(UInt32(100)))
     }
     
     func updateBattle(damageType: String) {
@@ -250,9 +250,14 @@ class BatttleViewController: UIViewController {
         var opponentDmg = 0
         if damageType == "light" {
             activeDmg = getLightAttack(activePokemon, defender: opponentPokemon)
-            opponentDmg = getLightAttack(opponentPokemon, defender: activePokemon)
         } else {
             activeDmg = getHeavyAttack(activePokemon, defender: opponentPokemon)
+        }
+        
+        if hitChance() <= 50 {
+            opponentDmg = getLightAttack(opponentPokemon, defender: activePokemon)
+        }
+        else {
             opponentDmg = getHeavyAttack(opponentPokemon, defender: activePokemon)
         }
         
@@ -299,7 +304,11 @@ class BatttleViewController: UIViewController {
     }
     
     func getHeavyAttack(attacker: Pokemon, defender: Pokemon) -> Int {
-        var dmg = Double((( 2 * level / 5 + 2) * (attacker.valueForKey("attack")!.integerValue) * heavyPower / (defender.valueForKey("defense")!.integerValue)) / 50) * getMatchup(attacker, defender: defender) * randomizer() / 100 + 1
-        return Int(dmg)
+        if hitChance() < 75 {
+            var dmg = Double((( 2 * level / 5 + 2) * (attacker.valueForKey("attack")!.integerValue) * heavyPower / (defender.valueForKey("defense")!.integerValue)) / 50) * getMatchup(attacker, defender: defender) * randomizer() / 100 + 1
+            return Int(dmg)
+        }
+        print("\(attacker.valueForKey("name")) missed")
+        return 0
     }
 }
