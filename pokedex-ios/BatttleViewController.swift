@@ -52,21 +52,17 @@ class BatttleViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         
         let instance = CoreDataInit.instance
-        let user = instance.entityUser()
-        let userFind = instance.searchEntity("User")
         
         // set active stats
-        if let userFind = userFind as? [NSManagedObject] {
-            print(userFind[0].valueForKey("active"))
-            if let poke = user.valueForKey("active") as? Pokemon {
-                if let pokedexId = poke.valueForKey("pokedexId") as? Int {
-                    activeId = pokedexId
-                }
-                poke.downloadPokemonDetails { () -> () in
-                    self.activePokemon = poke
-                    self.updateStats(self.activePokemon)
-                    
-                }
+        if let activePoke = instance.searchForActive() as? Pokemon {
+            if let pokedexId = activePoke.valueForKey("pokedexId") as? Int {
+                activeId = pokedexId
+            }
+            
+            activePoke.downloadPokemonDetails { () -> () in
+                self.activePokemon = activePoke
+                self.updateStats(self.activePokemon)
+                
             }
         }
     }
@@ -110,7 +106,6 @@ class BatttleViewController: UIViewController {
                     dexVC.musicPlayer = musicPlayer
                 }
             }
-            //musicPlayer.stop()
         }
     }
     
