@@ -168,11 +168,6 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         }
     }
     
-    // long press the collection cell
-    func longPressCell() {
-        print("this cell is long pressed")
-    }
-    
     // remove the keyboard when clicked search
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         view.endEditing(true)
@@ -202,8 +197,6 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
                 }
             }
         }
-        
-
     }
     
     @IBAction func backBtnPressed(sender: UIButton) {

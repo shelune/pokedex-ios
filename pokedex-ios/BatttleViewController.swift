@@ -17,7 +17,7 @@ class BatttleViewController: UIViewController {
     let lightPower = 40
     let heavyPower = 60
     let lightAccuracy = 100
-    let heavyAccuracy = 70
+    let heavyAccuracy = 75
     
     var opponentPokemon: Pokemon!
     var activePokemon: Pokemon!
@@ -237,6 +237,7 @@ class BatttleViewController: UIViewController {
         activeHPValue.text = "\(activeHP)"
     }
     
+    // Part of damage formula
     func randomizer() -> Double {
         return Double(Int(arc4random_uniform(UInt32(15))) + 85)
     }
@@ -287,10 +288,8 @@ class BatttleViewController: UIViewController {
         if let effectives = attacker.valueForKey("effectiveVersus") as? String, ineffectives = attacker.valueForKey("ineffectiveVersus") as? String {
             if let defenderType = defender.valueForKey("typeFirst") as? String {
                 if (effectives.rangeOfString(defenderType) != nil) {
-                    print("supereffective!")
                     return 2.0
                 } else if (ineffectives.rangeOfString(defenderType) != nil) {
-                    print("not very effective...")
                     return 0.5
                 }
             }
@@ -299,13 +298,13 @@ class BatttleViewController: UIViewController {
     }
     
     func getLightAttack(attacker: Pokemon, defender: Pokemon) -> Int {
-        var dmg = Double((( 2 * level / 5 + 2) * (attacker.valueForKey("attack")!.integerValue) * lightPower / (defender.valueForKey("defense")!.integerValue)) / 50) * getMatchup(attacker, defender: defender) * randomizer() / 100 + 1
+        let dmg = Double((( 2 * level / 5 + 2) * (attacker.valueForKey("attack")!.integerValue) * lightPower / (defender.valueForKey("defense")!.integerValue)) / 50) * getMatchup(attacker, defender: defender) * randomizer() / 100 + 1
         return Int(dmg)
     }
     
     func getHeavyAttack(attacker: Pokemon, defender: Pokemon) -> Int {
-        if hitChance() < 75 {
-            var dmg = Double((( 2 * level / 5 + 2) * (attacker.valueForKey("attack")!.integerValue) * heavyPower / (defender.valueForKey("defense")!.integerValue)) / 50) * getMatchup(attacker, defender: defender) * randomizer() / 100 + 1
+        if hitChance() < heavyAccuracy {
+            let dmg = Double((( 2 * level / 5 + 2) * (attacker.valueForKey("attack")!.integerValue) * heavyPower / (defender.valueForKey("defense")!.integerValue)) / 50) * getMatchup(attacker, defender: defender) * randomizer() / 100 + 1
             return Int(dmg)
         }
         print("\(attacker.valueForKey("name")) missed")
