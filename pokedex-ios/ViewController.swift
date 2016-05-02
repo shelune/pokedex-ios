@@ -85,7 +85,6 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             } else {
                 pokemon = pokemons[indexPath.row]
             }
-            
             cell.configureCell(pokemon)
             return cell
         } else {
@@ -111,8 +110,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     // Parsing data
     func parsePokemonCSV() {
         let path = NSBundle.mainBundle().pathForResource("pokemon", ofType: "csv")!
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        let managedContext = appDelegate.managedObjectContext
+        let cdInstance = CoreDataInit.instance
         
         do {
             let csv = try CSVParser(contentsOfURL: path)
@@ -121,8 +119,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             for row in rows {
                 let pokeId = Int(row["id"]!)!
                 let name = row["identifier"]?.capitalizedString
-                let entityPokemon = NSEntityDescription.entityForName("Pokemon", inManagedObjectContext: managedContext)
-                let poke = NSManagedObject(entity: entityPokemon!, insertIntoManagedObjectContext: managedContext)
+                let poke = cdInstance.entityPokemon()
                 
                 poke.setValue(name, forKey: "name")
                 poke.setValue(pokeId, forKey: "pokedexId")
@@ -137,7 +134,6 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     // filter owned Pokemon 
     func filterOwned() {
         let cdInstance = CoreDataInit.instance
-        
         var ownedIds = cdInstance.searchForOwned()
         pokemons = pokemons.filter({
             ownedIds.contains(($0.valueForKey("pokedexId") as! Int))
