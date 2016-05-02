@@ -16,7 +16,6 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
     // MARK: Properties
     var musicPlayer: AVAudioPlayer!
     var locationManager: CLLocationManager!
-    var foundBeacon = false
     var opponentId = 0
     var activeId = 0
     var pokemons = [NSManagedObject]()
@@ -31,8 +30,6 @@ class scanningController: UIViewController, CLLocationManagerDelegate {
         locationManager.requestWhenInUseAuthorization()
         
         initUser()
-        
-        setActive()
     }
     
     override func viewWillAppear(animated: Bool) {
